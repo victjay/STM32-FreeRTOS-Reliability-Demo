@@ -1,0 +1,564 @@
+ÄHello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=877163 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelayUntil tick_before=877663 elapsed=11
+[MON] stack_hwm acq=370 proc=198 mon=366 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelayUntil tick_before=878163 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=878663 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelayUntil tick_before=879163 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelayUntil tick_before=879663 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=880163 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelayUntil tick_before=880663 elapsed=11
+[MON] stack_hwm acq=370 proc=198 mon=366 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=881163 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=881663 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelayUntil tick_before=882163 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=882663 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=883163 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelayUntil tick_before=883663 elapsed=11
+[MON] stack_hwm acq=370 proc=198 mon=366 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=884163 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=884663 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelayUntil tick_before=885163 elapsed=11
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelay  tick_before=4647 elapsed=11
+Hello FreeRTOS
+[MON] stack_hwm acq=376 proc=205 mon=366 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[ACQ] vTaskDelayUntil tick_before=5163 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=5663 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelayUntil tick_before=6163 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=6663 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=7163 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelayUntil tick_before=7663 elapsed=11
+Hello FreeRTOS
+[MON] stack_hwm acq=376 proc=205 mon=366 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[ACQ] vTaskDelayUntil tick_before=8163 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=8663 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelayUntil tick_before=9163 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=9663 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=10163 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelayUntil tick_before=10663 elapsed=11
+Hello FreeRTOS
+[MON] stack_hwm acq=376 proc=205 mon=366 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[ACQ] vTaskDelayUntil tick_before=11163 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=11663 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=12163 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=12663 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=13163 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=13663 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=376 proc=205 mon=366 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+„[PROC] processing tick
+[ACQ] vTaskDelayUntil tick_before=10663 elapsed=11
+Hello FreeRTOS
+[MON] stack_hwm acq=376 proc=205 mon=366 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[ACQ] vTaskDelayUntil tick_before=11163 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=11663 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=12163 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=12663 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=13163 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=13663 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=376 proc=205 mon=366 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[ACQ] vTaskDelayUntil tick_before=14163 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=14663 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=15163 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=15663 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=16163 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=16663 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=376 proc=205 mon=366 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[ACQ] vTaskDelayUntil tick_before=17163 elapsed=11
+Hello FreeRTOS
+[ACQ] task started
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] vTaskDelay  tick_before=3 elapsed=12
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=519 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=1035 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelay  tick_before=1551 elapsed=11
+Hello FreeRTOS
+[MON] stack_hwm acq=376 proc=205 mon=423 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[ACQ] vTaskDelay  tick_before=2067 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=2583 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelay  tick_before=3099 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=3615 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=4131 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelay  tick_before=4647 elapsed=11
+Hello FreeRTOS
+[MON] stack_hwm acq=376 proc=205 mon=366 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[ACQ] vTaskDelayUntil tick_before=5163 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=5663 elapsed=11
+Hello FreeRTOS
+[ACQ] task started
+[PROC] proÿHello FreeRTOS
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=456 proc=205 mon=423 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=433 proc=205 mon=423 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] triggering overflow...
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=433 proc=205 mon=423 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] triggering overflow...
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PþHello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=433 proc=205 mon=423 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] triggering overflow...
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=433 proc=205 mon=423 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] triggering overflow...
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=433 proc=205 mon=423 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] triggering overflow...
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] proãHello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=433 proc=205 mon=423 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] triggering overflow...
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=433 proc=205 mon=423 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] triggering overflow...
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=433 proc=205 mon=423 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] triggering overflow...
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=433 proc=205 mon=423 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] triggering overflow...
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=433 proc=205 mon=423 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] triggering overflow...
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=433 proc=205 mon=423 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] triggering overflow...
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=433 proc=205 mon=423 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] triggering overflow...
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[øHello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=433 proc=205 mon=423 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] triggering overflow...
+[FAULT] HardFault

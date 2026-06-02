@@ -32,6 +32,25 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
+/* ===== FaultRecord: HardFault structure ===== */
+#define FAULT_MAGIC  0xDEADBEEFU
+#define FAULT_VER    1U
+
+typedef struct {
+    uint32_t magic;
+    uint32_t version;
+    uint32_t cfsr;
+    uint32_t hfsr;
+    uint32_t bfar;
+    uint32_t mmfar;
+    uint32_t pc;
+    uint32_t msp;
+    uint32_t psp;
+    uint32_t lr;
+} FaultRecord;
+
+extern FaultRecord fault_record;
+/* ===== FaultRecord end ===== */
 
 /* USER CODE END ET */
 

@@ -22,6 +22,8 @@
 #include "stm32f4xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "usart.h"
+#include <string.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -79,19 +81,52 @@ void NMI_Handler(void)
   /* USER CODE END NonMaskableInt_IRQn 1 */
 }
 
-/**
-  * @brief This function handles Hard fault interrupt.
-  */
-void HardFault_Handler(void)
-{
-  /* USER CODE BEGIN HardFault_IRQn 0 */
+// --- FaultRecord: .noinit section, soft-reset retained ---
+__attribute__((section(".noinit")))
+FaultRecord fault_record;
 
-  /* USER CODE END HardFault_IRQn 0 */
-  while (1)
-  {
-    /* USER CODE BEGIN W1_HardFault_IRQn 0 */
-    /* USER CODE END W1_HardFault_IRQn 0 */
-  }
+// --- naked handler: prologue 없이 레지스터 보존 후 즉시 분기 ---
+__attribute__((naked)) void HardFault_Handler(void)
+{
+    __asm volatile(
+        "mrs r0, msp        \n"
+        "mrs r1, psp        \n"
+        "mov r2, lr         \n"   // EXC_RETURN
+        "b   HardFault_Minimal \n"
+    );
+}
+
+// --- C fault handler: MSP 기반, HAL/RTOS API 없음 ---
+__attribute__((noreturn, noinline))
+void HardFault_Minimal(uint32_t msp, uint32_t psp, uint32_t lr)
+{
+    // PC 추출: EXC_RETURN bit2 = 0이면 MSP에 frame, 1이면 PSP에 frame
+    uint32_t pc = 0xFFFFFFFFU;
+    if ((lr & 0x4U) == 0U) {
+        // MSP frame: [sp+24] = PC
+        uint32_t *frame = (uint32_t *)msp;
+        pc = frame[6];
+    }
+    // PSP가 손상된 경우 PSP frame 접근 생략 → pc = 0xFFFFFFFF 유지
+
+    fault_record.magic   = FAULT_MAGIC;
+    fault_record.version = FAULT_VER;
+    fault_record.cfsr    = SCB->CFSR;
+    fault_record.hfsr    = SCB->HFSR;
+    fault_record.pc      = pc;
+    fault_record.msp     = msp;
+    fault_record.psp     = psp;
+    fault_record.lr      = lr;
+
+    // USART2 register direct polling (HAL 없이)
+    static const char msg[] = "[FAULT] HardFault — resetting\r\n";
+    for (uint32_t i = 0U; i < sizeof(msg) - 1U; i++) {
+        while ((USART2->SR & USART_SR_TXE) == 0U) {}
+        USART2->DR = (uint8_t)msg[i];
+    }
+    while ((USART2->SR & USART_SR_TC) == 0U) {}
+
+    NVIC_SystemReset();
 }
 
 /**

@@ -23,7 +23,13 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "tasks/task_acquisition.h"
+#include "tasks/task_processing.h"
+#include "tasks/task_monitor.h"
 
+#include <cstring>    // strlen
+#include <cstdio>     // snprintf
+#include "stm32f4xx_it.h"  // FaultRecord, FAULT_MAGIC, fault_record 선언
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -61,7 +67,11 @@ static void MX_GPIO_Init(void);
 void StartDefaultTask(void *argument);
 
 /* USER CODE BEGIN PFP */
+TaskHandle_t hAcquisition = NULL;
+TaskHandle_t hProcessing  = NULL;
+TaskHandle_t hMonitor     = NULL;
 
+extern "C" void check_fault_on_boot(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -86,7 +96,9 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
+  xTaskCreate(Task_Acquisition, "ACQ",  512, NULL, 3, &hAcquisition);
+  xTaskCreate(Task_Processing,  "PROC", 256, NULL, 2, &hProcessing);
+  xTaskCreate(Task_Monitor,     "MON",  512, NULL, 1, &hMonitor);
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -100,7 +112,7 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-
+  check_fault_on_boot();
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -271,7 +283,20 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+extern "C" void check_fault_on_boot(void)
+{
+    if (fault_record.magic == FAULT_MAGIC) {
+        char buf[128];
+        snprintf(buf, sizeof(buf),
+            "[BOOT] PrevFault CFSR=0x%08lX HFSR=0x%08lX "
+            "PC=0x%08lX MSP=0x%08lX PSP=0x%08lX LR=0x%08lX\r\n",
+            fault_record.cfsr, fault_record.hfsr,
+            fault_record.pc,   fault_record.msp,
+            fault_record.psp,  fault_record.lr);
+        HAL_UART_Transmit(&huart2, (uint8_t*)buf, strlen(buf), 1000);
+        fault_record.magic = 0U;
+    }
+}
 /* USER CODE END 4 */
 
 /* USER CODE BEGIN Header_StartDefaultTask */

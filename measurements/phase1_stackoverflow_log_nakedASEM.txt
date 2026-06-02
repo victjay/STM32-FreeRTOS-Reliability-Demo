@@ -1,0 +1,463 @@
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=433 proc=205 mon=423 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] triggering overflow...
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=433 proc=205 mon=423 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] triggering overflow...
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROÿHello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=433 proc=205 mon=423 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] triggering overflow...
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=433 proc=205 mon=423 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] triggering overflow...
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] processing ôHello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=433 proc=205 mon=423 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] triggering overflow...
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[BOOT] PrevFault CFSR=0x00000000 HFSR=0x80000000 PC=0x20000000 MSP=0x20000BB8 PSP=0x00000000 LR=0xFFFFFFF9
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=433 proc=205 mon=423 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] triggering overflow...
+[FAULT] HardFault â resetting
+[BOOT] PrevFault CFSR=0x00009600 HFSR=0x40000000 PC=0xFFFFFFFF MSP=0x2001FFE0 PSP=0x1FFFBFC8 LR=0xFFFFFFFD
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=433 proc=205 mon=423 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] triggering overflow...
+[FAULT] HardFault â resetting
+[BOOT] PrevFault CFSR=0x00009600 HFSR=0x40000000 PC=0xFFFFFFFF MSP=0x2001FFE0 PSP=0x1FFFBFC8 LR=0xFFFFFFFD
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=433 proc=205 mon=423 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] triggering overflow...
+[FAULT] HardFault â€” resetting
+[BOOT] PrevFault CFSR=0x00009600 HFSR=0x40000000 PC=0xFFFFFFFF MSP=0x2001FFE0 PSP=0x1FFFBFC8 LR=0xFFFFFFFD
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=433 proc=205 mon=423 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] triggering overflow...
+[FAULT] HardFault â resetting
+[BOOT] PrevFault CFSR=0x00009600 HFSR=0x40000000 PC=0xFFFFFFFF MSP=0x2001FFE0 PSP=0x1FFFBFC8 LR=0xFFFFFFFD
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=433 proc=205 mon=423 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] triggering overflow...
+[FAULT] HardFault â resetting
+[BOOT] PrevFault CFSR=0x00009600 HFSR=0x40000000 PC=0xFFFFFFFF MSP=0x2001FFE0 PSP=0x1FFFBFC8 LR=0xFFFFFFFD
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=433 proc=205 mon=423 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] triggering overflow...
+[FAULT] HardFault â resetting
+[BOOT] PrevFault CFSR=0x00009600 HFSR=0x40000000 PC=0xFFFFFFFF MSP=0x2001FFE0 PSP=0x1FFFBFC8 LR=0xFFFFFFFD
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=433 proc=205 mon=423 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] triggering overflow...
+[FAULT] HardFault â resetting
+[BOOT] PrevFault CFSR=0x00009600 HFSR=0x40000000 PC=0xFFFFFFFF MSP=0x2001FFE0 PSP=0x1FFFBFC8 LR=0xFFFFFFFD
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=433 proc=205 mon=423 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] triggering overflow...
+[FAULT] HardFault â resetting
+[BOOT] PrevFault CFSR=0x00009600 HFSR=0x40000000 PC=0xFFFFFFFF MSP=0x2001FFE0 PSP=0x1FFFBFC8 LR=0xFFFFFFFD
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=433 proc=205 mon=423 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] triggering overflow...
+[FAULT] HardFault â resetting
+[BOOT] PrevFault CFSR=0x00009600 HFSR=0x40000000 PC=0xFFFFFFFF MSP=0x2001FFE0 PSP=0x1FFFBFC8 LR=0xFFFFFFFD
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=433 proc=205 mon=423 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] triggering overflow...
+[FAULT] HardFault â resetting
+[BOOT] PrevFault CFSR=0x00009600 HFSR=0x40000000 PC=0xFFFFFFFF MSP=0x2001FFE0 PSP=0x1FFFBFC8 LR=0xFFFFFFFD
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=433 proc=205 mon=423 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] triggering overflow...
+[FAULT] HardFault â resetting
+[BOOT] PrevFault CFSR=0x00009600 HFSR=0x40000000 PC=0xFFFFFFFF MSP=0x2001FFE0 PSP=0x1FFFBFC8 LR=0xFFFFFFFD
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=433 proc=205 mon=423 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] triggering overflow...
+[FAULT] HardFault â resetting
+[BOOT] PrevFault CFSR=0x00009600 HFSR=0x40000000 PC=0xFFFFFFFF MSP=0x2001FFE0 PSP=0x1FFFBFC8 LR=0xFFFFFFFD
+Hello FreeRTOS
+[ACQ] task started
+[ACQ] task started
+[PROC] processingHello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=433 proc=205 mon=423 (words)
+[MON] heap free=9176 min_ever=9176 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
