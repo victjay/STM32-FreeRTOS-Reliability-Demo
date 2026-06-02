@@ -169,6 +169,7 @@ failure mode and inform the next design decision.
 | 2026-06-02 | PC extraction is skipped when exception stacking itself fails (STKERR set); recorded as 0xFFFFFFFF. |
 | 2026-06-02 | FaultRecord validity relies on magic value only, no CRC. Silent corruption between fault and reset is not detected. |
 | 2026-06-02 | NVIC_SystemReset() triggers system reset but does not guarantee peripheral re-initialization order. Boot sequence is assumed to complete normally. |
+| 2026-06-02 | HardFault_Handler naked attribute is outside USER CODE blocks and must be manually verified after CubeMX regeneration. vApplicationStackOverflowHook consolidated into freertos.c USER CODE BEGIN 4. |
 | TBD | ISR-to-task latency measured under limited load; production needs worst-case analysis. (Phase 2) |
 | TBD | Priority inversion scenario is simplified for demonstration. (Phase 3) |
 | TBD | Watchdog is used as final fallback, not selective recovery. (Phase 4) |
