@@ -2,8 +2,10 @@
 CAD.formats=
 CAD.pinconfig=
 CAD.provider=
-FREERTOS.IPParameters=Tasks01
+FREERTOS.IPParameters=Tasks01,configUSE_MALLOC_FAILED_HOOK,configCHECK_FOR_STACK_OVERFLOW
 FREERTOS.Tasks01=defaultTask,24,128,StartDefaultTask,Default,NULL,Dynamic,NULL,NULL
+FREERTOS.configCHECK_FOR_STACK_OVERFLOW=2
+FREERTOS.configUSE_MALLOC_FAILED_HOOK=1
 File.Version=6
 KeepUserPlacement=false
 Mcu.CPN=STM32F446RET6
@@ -195,3 +197,4 @@ VP_SYS_VS_tim6.Mode=TIM6
 VP_SYS_VS_tim6.Signal=SYS_VS_tim6
 board=NUCLEO-F446RE
 boardIOC=true
+rtos.0.ip=FREERTOS
