@@ -8,6 +8,11 @@
 #ifndef INC_TASKS_TASK_PI_H_
 #define INC_TASKS_TASK_PI_H_
 
+// Lock selection for the priority-inversion experiment:
+//   0 = binary semaphore (NO priority inheritance) -> BEFORE, inversion visible
+//   1 = mutex (priority inheritance)               -> AFTER, inversion mitigated
+#define PI_USE_MUTEX 1
+
 #ifdef __cplusplus
 extern "C" {
 #endif

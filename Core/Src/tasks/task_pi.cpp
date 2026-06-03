@@ -47,8 +47,20 @@ static uint32_t ms_to_cycles(uint32_t ms)
 void PI_Init(void)
 {
     // Lock under test: created then made available once.
-    g_piLock = xSemaphoreCreateBinary();
-    xSemaphoreGive(g_piLock);
+    //g_piLock = xSemaphoreCreateBinary(); // before
+    //xSemaphoreGive(g_piLock);			   // before
+
+	// After:
+	#if PI_USE_MUTEX
+	    // AFTER: mutex provides priority inheritance.
+	    // Created already available, so no initial give.
+	    g_piLock = xSemaphoreCreateMutex();
+	#else
+	    // BEFORE: binary semaphore has no priority inheritance.
+	    // Must be given once to start in the available state.
+	    g_piLock = xSemaphoreCreateBinary();
+	    xSemaphoreGive(g_piLock);
+	#endif
 
     // Handshake semaphores start empty, so the first take() blocks until give().
     sem_start_low          = xSemaphoreCreateBinary();
@@ -61,7 +73,15 @@ void PI_Init(void)
 // Controller (priority 4): enforces the scenario order, then blocks forever.
 void Task_PI_Controller(void *argument)
 {
-    UartLogger::getInstance().log("[PI_CTRL] sequencing scenario\r\n");
+    //UartLogger::getInstance().log("[PI_CTRL] sequencing scenario\r\n"); // before
+
+	// After:
+	#if PI_USE_MUTEX
+	    UartLogger::getInstance().log("[PI] mode=AFTER mutex priority inheritance\r\n");
+	#else
+	    UartLogger::getInstance().log("[PI] mode=BEFORE binary semaphore no inheritance\r\n");
+	#endif
+	    UartLogger::getInstance().log("[PI_CTRL] sequencing scenario\r\n");
 
     // 1. Low runs first and acquires the lock.
     xSemaphoreGive(sem_start_low);
