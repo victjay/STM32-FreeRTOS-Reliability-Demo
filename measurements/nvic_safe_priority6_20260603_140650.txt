@@ -1,0 +1,77 @@
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=433 proc=205 mon=423 (words)
+[MON] heap free=7920 min_ever=7920 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] triggering overflow...
+[FAULT] HardFault â€” resetting
+[BOOT] PrevFault CFSR=0x00009600 HFSR=0x40000000 PC=0xFFFFFFFF MSP=0x2001FFE0 PSP=0x1FFFBFB0 LR=0xFFFFFFFD
+[SYS] SystemCoreClock=84000000
+Hello FreeRTOS
+[ACQ] task started
+[LAT] task started
+[LAT] seq,isr_cycle,task_cycle,delta_cycles,latency_us
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+0,44128197,44129598,1401,16.679
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+1,159439634,159441062,1428,17.000
+Hello FreeRTOS
+[MON] stack_hwm acq=433 proc=205 mon=423 (words)
+[MON] heap free=7920 min_ever=7920 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+2,282242642,282244070,1428,17.000
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+3,402064285,402065713,1428,17.000
+[ACQ] triggering overflow...
+[FAULT] HardFault â resetting
+[BOOT] PrevFault CFSR=0x00009600 HFSR=0x40000000 PC=0xFFFFFFFF MSP=0x2001FFE0 PSP=0x1FFFBFB0 LR=0xFFFFFFFD
+[SYS] SystemCoreClock=84000000
+Hello FreeRTOS
+[ACQ] task started
+[LAT] task started
+[LAT] seq,isr_cycle,task_cycle,delta_cycles,latency_us
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+0,96564070,96565471,1401,16.679
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=433 proc=205 mon=423 (words)
+[MON] heap free=7920 min_ever=7920 (bytes)
+[PROC] processing tick
+1,198437339,198438767,1428,17.000
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+2,316543856,316545284,1428,17.000
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick

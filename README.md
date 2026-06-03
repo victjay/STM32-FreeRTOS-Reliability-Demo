@@ -181,6 +181,37 @@ measuring it requires cycle-accurate timing.
 
 ---
 
+## Phase 2B — NVIC Interrupt Priority
+
+### Problem
+FreeRTOS restricts which interrupts can safely call RTOS APIs;
+violating this causes system freeze or hard faults.
+
+### Design Choice
+Only interrupts at or below configMAX_SYSCALL_INTERRUPT_PRIORITY
+can call FromISR APIs. Higher-priority interrupts must not call
+any FreeRTOS API.
+
+### Implementation
+- configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY = 5
+- SystemCoreClock = 84MHz (verified at runtime)
+- Safe test: Priority 6 → xQueueSendFromISR() normal operation
+- Unsafe test: Priority 4 → configASSERT fires → system freeze
+
+### Evidence
+- measurements/nvic_safe_priority6_*.txt
+- measurements/nvic_unsafe_priority4_*.txt
+
+### Interrupt Priority Table
+
+| Priority | Zone     | FreeRTOS FromISR API | Result                       |
+|----------|----------|----------------------|------------------------------|
+| 0~4      | Unsafe   | Not allowed          | System freeze (configASSERT) |
+| 5        | Boundary | configMAX_SYSCALL    | —                            |
+| 6~15     | Safe     | Allowed              | Normal operation             |
+
+---
+
 ## Known Limitations
 
 | Date | Known Limitation |
@@ -194,7 +225,8 @@ measuring it requires cycle-accurate timing.
 | 2026-06-02 | FaultRecord validity relies on magic value only, no CRC. Silent corruption between fault and reset is not detected. |
 | 2026-06-02 | NVIC_SystemReset() triggers system reset but does not guarantee peripheral re-initialization order. Boot sequence is assumed to complete normally. |
 | 2026-06-02 | HardFault_Handler naked attribute is outside USER CODE blocks and must be manually verified after CubeMX regeneration. vApplicationStackOverflowHook consolidated into freertos.c USER CODE BEGIN 4. |
-| 2026-06-02 | ISR-to-task latency measured under limited load; production needs worst-case analysis under full system load. (Phase 2A) |
+| 2026-06-03 | ISR-to-task latency measured under limited load; production needs worst-case analysis under full system load. (Phase 2A) |
+| 2026-06-03 | Only priority 4 (unsafe) and 6 (safe) were tested; full verification requires testing all used interrupt priorities. (Phase 2B) |
 | TBD | Priority inversion scenario is simplified for demonstration. (Phase 3) |
 | TBD | Watchdog is used as final fallback, not selective recovery. (Phase 4) |
 | TBD | This is not production firmware: no MISRA compliance, no long-duration qualification. (Phase 5) |

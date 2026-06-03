@@ -122,6 +122,11 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   check_fault_on_boot();
+
+  char buf[40];
+  snprintf(buf, sizeof(buf), "[SYS] SystemCoreClock=%lu\r\n", SystemCoreClock);
+  UartLogger::getInstance().log(buf);
+
   /* USER CODE END 2 */
 
   /* Init scheduler */

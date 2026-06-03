@@ -1,0 +1,39 @@
+[ACQ] triggering overflow...
+[FAULT] HardFault â resetting
+[BOOT] PrevFault CFSR=0x00009600 HFSR=0x40000000 PC=0xFFFFFFFF MSP=0x2001FFE0 PSP=0x1FFFBFB0 LR=0xFFFFFFFD
+[SYS] SystemCoreClock=84000000
+Hello FreeRTOS
+[ACQ] task started
+[LAT] task started
+[LAT] seq,isr_cycle,task_cycle,delta_cycles,latency_us
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=433 proc=205 mon=423 (words)
+[MON] heap free=7920 min_ever=7920 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] triggering overflow...
+[FAULT] HardFault â resetting
+[BOOT] PrevFault CFSR=0x00009600 HFSR=0x40000000 PC=0xFFFFFFFF MSP=0x2001FFE0 PSP=0x1FFFBFB0 LR=0xFFFFFFFD
+[SYS] SystemCoreClock=84000000
+Hello FreeRTOS
+[ACQ] task started
+[LAT] task started
+[LAT] seq,isr_cycle,task_cycle,delta_cycles,latency_us
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
