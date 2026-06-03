@@ -157,6 +157,30 @@ failure mode and inform the next design decision.
 
 ---
 
+## Phase 2A — ISR-to-Task Communication + DWT Latency
+
+### Problem
+ISR-to-task response time matters in real-time embedded systems;
+measuring it requires cycle-accurate timing.
+
+### Design Choice
+- EXTI ISR + FreeRTOS queue to defer processing from interrupt context to task context
+- DWT CYCCNT for cycle-accurate latency measurement (nanosecond resolution on Cortex-M4)
+- ISR captures DWT->CYCCNT immediately on entry (first instruction)
+- Task captures DWT->CYCCNT immediately on queue receive
+
+### Implementation
+- PC13 (B1 Button) EXTI falling edge → xQueueSendFromISR() → LatencyTask
+- DWT->CYCCNT captured at ISR entry and task receive
+- latency_us = (delta_cycles × 1,000,000) / SystemCoreClock
+- LatencyMeter C++ class handles calculation and CSV formatting
+
+### Evidence
+- Measured ISR-to-task latency: **~16.8us** (1413 cycles @ 180MHz)
+- Log file: `measurements/latency_YYYYMMDD_HHMMSS.txt`
+
+---
+
 ## Known Limitations
 
 | Date | Known Limitation |
@@ -170,7 +194,7 @@ failure mode and inform the next design decision.
 | 2026-06-02 | FaultRecord validity relies on magic value only, no CRC. Silent corruption between fault and reset is not detected. |
 | 2026-06-02 | NVIC_SystemReset() triggers system reset but does not guarantee peripheral re-initialization order. Boot sequence is assumed to complete normally. |
 | 2026-06-02 | HardFault_Handler naked attribute is outside USER CODE blocks and must be manually verified after CubeMX regeneration. vApplicationStackOverflowHook consolidated into freertos.c USER CODE BEGIN 4. |
-| TBD | ISR-to-task latency measured under limited load; production needs worst-case analysis. (Phase 2) |
+| 2026-06-02 | ISR-to-task latency measured under limited load; production needs worst-case analysis under full system load. (Phase 2A) |
 | TBD | Priority inversion scenario is simplified for demonstration. (Phase 3) |
 | TBD | Watchdog is used as final fallback, not selective recovery. (Phase 4) |
 | TBD | This is not production firmware: no MISRA compliance, no long-duration qualification. (Phase 5) |

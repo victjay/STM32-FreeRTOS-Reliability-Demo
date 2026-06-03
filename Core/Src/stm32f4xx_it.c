@@ -24,6 +24,7 @@
 /* USER CODE BEGIN Includes */
 #include "usart.h"
 #include <string.h>
+#include "latency_queue.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -64,7 +65,7 @@ FaultRecord fault_record;
 extern TIM_HandleTypeDef htim6;
 
 /* USER CODE BEGIN EV */
-
+extern volatile uint32_t isr_seq;
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -85,7 +86,9 @@ void NMI_Handler(void)
   /* USER CODE END NonMaskableInt_IRQn 1 */
 }
 
-// --- naked handler: prologue 없이 레지스터 보존 후 즉시 분기 ---
+/**
+  * @brief This function handles Hard fault interrupt.
+  */
 __attribute__((naked)) void HardFault_Handler(void)
 {
   /* USER CODE BEGIN HardFault_IRQn 0 */
@@ -102,8 +105,6 @@ __attribute__((naked)) void HardFault_Handler(void)
     /* USER CODE END W1_HardFault_IRQn 0 */
   }
 }
-
-
 
 /**
   * @brief This function handles Memory management fault.
@@ -169,6 +170,26 @@ void DebugMon_Handler(void)
 /* For the available peripheral interrupt handler names,                      */
 /* please refer to the startup file (startup_stm32f4xx.s).                    */
 /******************************************************************************/
+
+/**
+  * @brief This function handles EXTI line[15:10] interrupts.
+  */
+void EXTI15_10_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI15_10_IRQn 0 */
+  uint32_t capture = DWT->CYCCNT;  // most firstly capture
+
+  BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+
+  if (xLatencyQueue != NULL) {
+      xQueueSendFromISR(xLatencyQueue, &capture, &xHigherPriorityTaskWoken);
+  }
+  /* USER CODE END EXTI15_10_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(B1_Pin);
+  /* USER CODE BEGIN EXTI15_10_IRQn 1 */
+  portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+  /* USER CODE END EXTI15_10_IRQn 1 */
+}
 
 /**
   * @brief This function handles TIM6 global interrupt and DAC1, DAC2 underrun error interrupts.

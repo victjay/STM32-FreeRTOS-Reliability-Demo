@@ -11,18 +11,26 @@
 #include "UartLogger.hpp"
 #include <stdio.h>
 
+// origin code start
 //static void trigger_overflow(void) {
 //    volatile uint8_t big[2048];
 //    big[0] = 1;
 //    (void)big;
 //}
+// origin code end
 
+/* Intentional infinite recursion to trigger stack overflow hook.
+ * Used in Phase 1 stack overflow detection test only.
+ * -Winfinite-recursion suppressed intentionally. */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Winfinite-recursion"
 static void trigger_overflow(int depth) {
     volatile uint8_t chunk[64];
     chunk[0] = (uint8_t)depth;
     (void)chunk;
     trigger_overflow(depth + 1);
 }
+#pragma GCC diagnostic pop
 
 void Task_Acquisition(void *argument)
 {
