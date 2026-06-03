@@ -36,10 +36,10 @@ void Task_Acquisition(void *argument)
 {
 
 	UartLogger::getInstance().log("[ACQ] task started\r\n");
-	//trigger_overflow();  // 테스트용 — 확인 후 제거
-    vTaskDelay(pdMS_TO_TICKS(5000));  // 디버거 attach 대기
-    UartLogger::getInstance().log("[ACQ] triggering overflow...\r\n");
-    trigger_overflow(0);
+
+    //vTaskDelay(pdMS_TO_TICKS(5000));  // wait 5000ms // Disabled: debugger attach wait, used in Phase 1
+    //UartLogger::getInstance().log("[ACQ] triggering overflow...\r\n"); // Disabled after Phase 1
+    //trigger_overflow(0); // Disabled after Phase 1 stack overflow test
 
     //UartLogger::log("[ACQ] task started\r\n");
 

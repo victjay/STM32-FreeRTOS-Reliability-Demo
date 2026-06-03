@@ -1,0 +1,34 @@
+[ACQ] vTaskDelayUntil tick_before=222171 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelayUntil tick_before=222671 elapsed=11
+Hello FreeRTOS
+[SYS] SystemCoreClock=84000000
+Hello FreeRTOS
+[PI_CTRL] sequencing scenario
+[ACQ] task started
+[LAT] task started
+[LAT] seq,isr_cycle,task_cycle,delta_cycles,latency_us
+[ACQ] vTaskDelay  tick_before=5 elapsed=18
+[ACQ] task started
+[PROC] processing tick
+[ACQ] task started
+[PI_LOW] acquired lock tick=39
+[PI_CTRL] done, blocking
+[PI_MED] start CPU burn tick=45
+[PI_MED] end CPU burn tick=248
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=527 elapsed=11
+[PI_HIGH] got lock wait_cycles=42677196 wait_us=508061 wait_ticks=508
+[PI_LOW] released lock tick=557
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=1043 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelay  tick_before=1559 elapsed=11
+Hello FreeRTOS
+[MON] stack_hwm acq=376 proc=205 mon=423 (words)
+[MON] heap free=2848 min_ever=2848 (bytes)
+[ACQ] vTaskDelay  tick_before=2075 elapsed=11
+[PROC] processing tick

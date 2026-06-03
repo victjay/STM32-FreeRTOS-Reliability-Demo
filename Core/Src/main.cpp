@@ -38,6 +38,9 @@
 #include "tasks/task_latency.h"
 #include "gpio.h"
 
+#include "tasks/task_pi.h"
+#include "semphr.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -69,6 +72,7 @@ const osThreadAttr_t defaultTask_attributes = {
 extern osThreadId_t defaultTaskHandle;
 
 QueueHandle_t xLatencyQueue = NULL;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -79,8 +83,15 @@ void StartDefaultTask(void *argument);
 TaskHandle_t hAcquisition = NULL;
 TaskHandle_t hProcessing  = NULL;
 TaskHandle_t hMonitor     = NULL;
-
 extern "C" void check_fault_on_boot(void);
+
+TaskHandle_t hPI_Controller = NULL;
+TaskHandle_t hPI_Low        = NULL;
+TaskHandle_t hPI_Medium     = NULL;
+TaskHandle_t hPI_High       = NULL;
+
+extern "C" void PI_Init(void);
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -108,6 +119,14 @@ int main(void)
   xTaskCreate(Task_Acquisition, "ACQ",  512, NULL, 3, &hAcquisition);
   xTaskCreate(Task_Processing,  "PROC", 256, NULL, 2, &hProcessing);
   xTaskCreate(Task_Monitor,     "MON",  512, NULL, 1, &hMonitor);
+
+  PI_Init();
+
+  xTaskCreate(Task_PI_Controller, "PI_CTRL", 256, NULL, 4, &hPI_Controller);
+  xTaskCreate(Task_PI_High,       "PI_HIGH", 256, NULL, 3, &hPI_High);
+  xTaskCreate(Task_PI_Medium,     "PI_MED",  256, NULL, 2, &hPI_Medium);
+  xTaskCreate(Task_PI_Low,        "PI_LOW",  256, NULL, 1, &hPI_Low);
+
   /* USER CODE END Init */
 
   /* Configure the system clock */

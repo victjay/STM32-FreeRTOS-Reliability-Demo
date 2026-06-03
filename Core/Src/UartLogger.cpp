@@ -7,7 +7,17 @@ UartLogger& UartLogger::getInstance() {
 }
 
 UartLogger::UartLogger() {
-    mutex_ = osMutexNew(NULL);
+    // NULL attribute: uses default settings (priority inheritance not explicitly enabled)
+    // mutex_ = osMutexNew(NULL);
+
+    // Explicitly enable priority inheritance to prevent priority inversion on UART access
+    static const osMutexAttr_t uart_mutex_attr = {
+        "UartLoggerMutex",
+        osMutexPrioInherit,
+        NULL,
+        0
+    };
+    mutex_ = osMutexNew(&uart_mutex_attr);
 }
 
 void UartLogger::log(const char* msg) {
