@@ -25,6 +25,7 @@
 #include "usart.h"
 #include <string.h>
 #include "latency_queue.h"
+#include "semphr.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -48,6 +49,10 @@
 // --- FaultRecord: .noinit section, soft-reset retained ---
 __attribute__((section(".noinit")))
 FaultRecord fault_record;
+
+//extern QueueHandle_t  xLatencyQueue;       // Phase 2A latency path (existing)
+extern SemaphoreHandle_t g_buttonEventSem; // Phase 3 event path
+extern volatile uint32_t g_isrRawCount;    // observability-only ISR entry count
 
 /* USER CODE END PV */
 
@@ -177,14 +182,30 @@ void DebugMon_Handler(void)
 void EXTI15_10_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI15_10_IRQn 0 */
-  uint32_t capture = DWT->CYCCNT;  // most firstly capture
 
+  // Before:
+//  uint32_t capture = DWT->CYCCNT;  // most firstly capture
+//
+//  BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+//
+//  if (xLatencyQueue != NULL) {
+//      xQueueSendFromISR(xLatencyQueue, &capture, &xHigherPriorityTaskWoken);
+//  }
+  // After:
+  g_isrRawCount++;                 // observability only: count every ISR entry
+  uint32_t capture = DWT->CYCCNT;  // most firstly capture
   BaseType_t xHigherPriorityTaskWoken = pdFALSE;
 
+  // Phase 2A: latency queue path (NULL-checked)
   if (xLatencyQueue != NULL) {
       xQueueSendFromISR(xLatencyQueue, &capture, &xHigherPriorityTaskWoken);
   }
+  // Phase 3: binary semaphore event path (NULL-checked, separate consumer)
+  if (g_buttonEventSem != NULL) {
+      xSemaphoreGiveFromISR(g_buttonEventSem, &xHigherPriorityTaskWoken);
+  }
   /* USER CODE END EXTI15_10_IRQn 0 */
+
   HAL_GPIO_EXTI_IRQHandler(B1_Pin);
   /* USER CODE BEGIN EXTI15_10_IRQn 1 */
   portYIELD_FROM_ISR(xHigherPriorityTaskWoken);

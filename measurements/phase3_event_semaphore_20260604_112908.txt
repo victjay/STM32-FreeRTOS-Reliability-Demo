@@ -1,0 +1,102 @@
+ɕIQ=M5
+[ACQ] vTaskDelayUntil tick_before=335675 elapsed=12
+[PROC] processing tick
+[SYS] SystemCoreClock=84000000
+Hello FreeRTOS
+[PI] mode=AFTER mutex priority inheritance
+[PI_CTRL] sequencing scenario
+[ACQ] task started
+[LAT] task started
+[LAT] seq,isr_cycle,task_cycle,delta_cycles,latency_us
+[ACQ] vTaskDelay  tick_before=9 elapsed=18
+[ACQ] task started
+[EVENT] consumer task started
+[PROC] processing tick
+[ACQ] task started
+[PI_LOW] acquired lock tick=46
+[PI_CTRL] done, blocking
+[PI_HIGH] got lock wait_cycles=25397354 wait_us=302349 wait_ticks=303
+[PI_MED] start CPU burn tick=358
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=531 elapsed=11
+[PI_MED] end CPU burn tick=561
+[PI_LOW] released lock tick=564
+[SYS] SystemCoreClock=84000000
+Hello FreeRTOS
+[PI] mode=AFTER mutex priority inheritance
+[PI_CTRL] sequencing scenario
+[ACQ] task started
+[LAT] task started
+[LAT] seq,isr_cycle,task_cycle,delta_cycles,latency_us
+[ACQ] vTaskDelay  tick_before=9 elapsed=18
+[ACQ] task started
+[EVENT] consumer task started
+[PROC] processing tick
+[ACQ] task started
+[PI_LOW] acquired lock tick=46
+[PI_CTRL] done, blocking
+[PI_HIGH] got lock wait_cycles=25397354 wait_us=302349 wait_ticks=303
+[PI_MED] start CPU burn tick=358
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=531 elapsed=11
+[PI_MED] end CPU burn tick=561
+[PI_LOW] released lock tick=564
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=1047 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelay  tick_before=1563 elapsed=11
+0,157630738,157632721,1983,23.607
+[EVENT] button_event_count=1 isr_raw_count=1
+Hello FreeRTOS
+[MON] stack_hwm acq=376 proc=198 mon=423 (words)
+[MON] heap free=1624 min_ever=1624 (bytes)
+[ACQ] vTaskDelay  tick_before=2079 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=2595 elapsed=11
+1,248929162,248931171,2009,23.917
+[EVENT] button_event_count=2 isr_raw_count=2
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelay  tick_before=3111 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=3627 elapsed=11
+2,307375982,307377991,2009,23.917
+[EVENT] button_event_count=3 isr_raw_count=3
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=4143 elapsed=11
+3,357223129,357225138,2009,23.917
+[EVENT] button_event_count=4 isr_raw_count=4
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelay  tick_before=4659 elapsed=11
+4,415801891,415803900,2009,23.917
+[EVENT] button_event_count=5 isr_raw_count=5
+Hello FreeRTOS
+[MON] stack_hwm acq=376 proc=198 mon=366 (words)
+[MON] heap free=1624 min_ever=1624 (bytes)
+[ACQ] vTaskDelayUntil tick_before=5175 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+5,470975795,470977804,2009,23.917
+[EVENT] button_event_count=6 isr_raw_count=6
+[ACQ] vTaskDelayUntil tick_before=5675 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelayUntil tick_before=6175 elapsed=11
+6,529057071,529059080,2009,23.917
+[EVENT] button_event_count=7 isr_raw_count=7
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=6675 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=7175 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelayUntil tick_before=7675 elapsed=11
+Hello FreeRTOS
+[MON] stack_hwm acq=370 proc=198 mon=366 (words)
+[MON] heap free=1624 min_ever=1624 (bytes)

@@ -35,11 +35,13 @@
 #include "latency_queue.h"
 #include "LatencyMeter.hpp"
 
-#include "tasks/task_latency.h"
+#include "tasks/task_latency.h" // phase 2a
 #include "gpio.h"
 
-#include "tasks/task_pi.h"
+#include "tasks/task_pi.h"  // phase 2b
 #include "semphr.h"
+
+#include "tasks/task_event.h"  // phase 3
 
 /* USER CODE END Includes */
 
@@ -92,6 +94,9 @@ TaskHandle_t hPI_High       = NULL;
 
 extern "C" void PI_Init(void);
 
+TaskHandle_t hEvent = NULL;
+extern "C" void EventDemo_Init(void);
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -126,6 +131,9 @@ int main(void)
   xTaskCreate(Task_PI_High,       "PI_HIGH", 256, NULL, 3, &hPI_High);
   xTaskCreate(Task_PI_Medium,     "PI_MED",  256, NULL, 2, &hPI_Medium);
   xTaskCreate(Task_PI_Low,        "PI_LOW",  256, NULL, 1, &hPI_Low);
+
+  EventDemo_Init();
+  xTaskCreate(Task_Event, "EVENT", 256, NULL, 2, &hEvent);
 
   /* USER CODE END Init */
 
