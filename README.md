@@ -8,7 +8,7 @@ fault detection, watchdog fallback, and evidence-based debugging.
 ## Hardware
 
 - Board: NUCLEO-F446RE
-- MCU: STM32F446RE (Cortex-M4, 180MHz)
+- MCU: STM32F446RE (Cortex-M4, 84MHz)
 - Flash: 512KB / RAM: 128KB
 
 ## Environment
@@ -34,8 +34,8 @@ for determinism and compatibility with CubeMX-generated code.
 
 - [x] Phase 0: Environment setup + LED Blink + FreeRTOS Hello World
 - [x] Phase 1: Task Scheduling + Stack/Heap + HardFault pattern (심화)
-- [ ] Phase 2: ISR + DWT Latency + NVIC Priority
-- [ ] Phase 3: Mutex + Priority Inversion + Queue Policy
+- [x] Phase 2: ISR + DWT Latency + NVIC Priority
+- [x] Phase 3: Mutex + Priority Inversion + Queue Policy
 - [ ] Phase 4: Fault Detection + Watchdog
   - [x] HardFault handler + FaultRecord + noinit reset pattern
   - [ ] HealthMonitor (task heartbeat)
@@ -176,8 +176,8 @@ measuring it requires cycle-accurate timing.
 - LatencyMeter C++ class handles calculation and CSV formatting
 
 ### Evidence
-- Measured ISR-to-task latency: **~16.8us** (1413 cycles @ 180MHz)
-- Log file: `measurements/latency_YYYYMMDD_HHMMSS.txt`
+- Measured ISR-to-task latency: **~16.8us** (1413 cycles @ 84MHz)
+- Log file: `measurements/latency_20260603_115219.txt'
 
 ---
 
@@ -211,6 +211,135 @@ any FreeRTOS API.
 | 6~15     | Safe     | Allowed              | Normal operation             |
 
 ---
+## Phase 3A — Mutex + UartLogger Priority Inheritance
+
+**Completed:** 2026-06-04
+
+| | |
+|---|---|
+| **Problem** | Shared UART access from multiple tasks can interleave output and cause priority inversion if a low-priority task holds the port while a high-priority task waits. |
+| **Design choice** | Use a mutex (not a binary semaphore) for UART protection. FreeRTOS mutexes support priority inheritance, which bounds the blocking time of a high-priority waiter. UartLogger uses `osMutexPrioInherit` explicitly rather than relying on defaults. |
+| **Implementation** | UartLogger singleton creates its mutex with `osMutexAttr_t` setting `osMutexPrioInherit`. All `log()` calls acquire/release the mutex around `HAL_UART_Transmit`. |
+| **Evidence** | All subsequent multi-task logs (PI, EVENT, QUEUE) share UART without corruption. |
+| **Limitation** | Mutex protects ordering, not throughput; heavy logging can make UART the system bottleneck (observed in Phase 3D, mitigated by rate-limiting consumer output). |
+
+---
+
+## Phase 3B — Priority Inversion (Mutex Inheritance)
+
+**Completed:** 2026-06-04
+
+| | |
+|---|---|
+| **Problem** | When a low-priority task holds a lock a high-priority task needs, a medium-priority task can preempt the low task and indirectly block the high task — unbounded priority inversion. |
+| **Design choice** | Reproduce inversion deterministically, then mitigate with mutex priority inheritance. A controller task (P=4) sequences the scenario via handshake semaphores so ordering does not depend on startup delays. A compile switch `PI_USE_MUTEX` toggles the lock between binary semaphore (no inheritance, BEFORE) and mutex (inheritance, AFTER). |
+| **Implementation** | Four tasks: Controller(4), High(3), Medium(2), Low(1). Low takes the lock and runs a DWT-cycle-based critical section (300ms). Medium runs a 200ms CPU burn. High measures lock-wait via DWT->CYCCNT. busy_cycles() uses runtime SystemCoreClock, not a hardcoded value. |
+| **Evidence** | BEFORE (binary): High wait = 508ms. AFTER (mutex): High wait = 302ms. The ~206ms reduction equals the removed Medium interference. See `measurements/phase3_inversion_before_*.txt` and `phase3_inversion_after_*.txt`. |
+| **Limitation** | Priority inversion scenario is simplified for demonstration; real systems require design-level avoidance, not just inheritance. A residual TOCTOU gap exists between High's "about to take" signal and the actual blocking take, but no task can preempt High in that window in this setup. |
+
+### Measured Values
+
+| Mode | Lock type | High wait (us) | High wait (ticks) |
+|---|---|---|---|
+| BEFORE | binary semaphore | 508061 (~508ms) | 508 |
+| AFTER | mutex (prio inherit) | 302343 (~302ms) | 302 |
+
+Cross-check (AFTER): 25,397,064 cycles ÷ 84,000,000 Hz = 302.3ms. Tick, microsecond, and cycle measurements agree.
+
+### Event Ordering Evidence
+
+In BEFORE, Medium starts (tick 45) while Low holds the lock, delaying High.
+In AFTER, Low inherits High's priority, finishes its critical section, and High
+acquires the lock *before* Medium runs (Medium start delayed to tick 358).
+This ordering shift is the direct evidence of priority inheritance.
+
+---
+
+## Phase 3C — Binary Semaphore Event Signaling (ISR → Task)
+
+**Completed:** 2026-06-04
+
+| | |
+|---|---|
+| **Problem** | An interrupt must hand off an event to a task without doing work in ISR context. A binary semaphore is the canonical mechanism for ISR-to-task deferred signaling. |
+| **Design choice** | The PC13 EXTI ISR gives a binary semaphore; a consumer task blocks on it. This path is kept fully separate from the Phase 2A latency queue path (own task, own semaphore, own counter). Both FromISR calls share one `xHigherPriorityTaskWoken`, with a single `portYIELD_FROM_ISR`. |
+| **Implementation** | `xSemaphoreGiveFromISR(g_buttonEventSem, ...)` in the EXTI ISR (priority 6, FromISR-safe per Phase 2B). Consumer increments `button_event_count`. An observability-only `g_isrRawCount` (volatile, not used for control) counts ISR entries to expose semaphore coalescing. |
+| **Evidence** | Button presses produced `button_event_count == isr_raw_count` (1:1) with no bounce in the capture. See `measurements/phase3_event_semaphore_*.txt`. |
+| **Limitation** | A binary semaphore coalesces multiple pending signals into one; `raw > event` (not observed here) would indicate bounce or a slow consumer. This is intended behavior, not debounce — no debounce logic is implemented. |
+
+### Coalescing Note
+
+`raw > event` means multiple ISR triggers were coalesced by the binary
+semaphore. This can happen due to button bounce or because the consumer had
+not yet taken the semaphore. `g_isrRawCount` is a diagnostic counter only.
+
+---
+
+## Phase 3D — Queue Full Policy (DROP-NEW)
+
+**Completed:** 2026-06-04
+
+| | |
+|---|---|
+| **Problem** | When a producer outpaces a consumer, the queue fills. The overflow policy determines what data is lost and whether the loss is visible. |
+| **Design choice** | DROP-NEW: on a full queue the new item is dropped and existing queued items are preserved (`xQueueSend` with timeout 0, no `xQueueOverwrite`). Preserving queued order matters more than keeping only the newest value for this event-stream demo. Two counters are kept separate by design. |
+| **Implementation** | Dedicated queue (depth 5, item `uint32_t`), separate from the Phase 2A latency queue. Producer (P=2, 10ms) generates items; Consumer (P=1, 100ms) drains one per cycle and prints counters every 10th cycle (~1 line/sec). Producer does not log per-drop, to avoid UART becoming the bottleneck. |
+| **Evidence** | drop_count and overflow_count rose together at ~90/sec (Producer 10x faster than Consumer). See `measurements/phase3_queue_dropnew_*.txt`. |
+| **Limitation** | The two counters increment together in this demo; they diverge only once a send timeout or partial-retention policy is introduced. Queue policy must match application data-loss requirements. |
+
+### Counter Semantics
+
+| Counter | Meaning |
+|---|---|
+| `queue_drop_count` | Items actually lost (data loss) |
+| `queue_overflow_count` | Queue-full events (saturation) |
+
+They measure different concepts and are kept separate so that introducing a
+send timeout or a priority-based retention policy does not require restructuring
+the instrumentation.
+
+---
+
+## Stack / Heap Sizing Validation
+
+**Completed:** 2026-06-04
+
+Task stack sizes were validated using `uxTaskGetStackHighWaterMark()` rather
+than guessed. The queue consumer initially failed at 128 words: a stack
+overflow occurred during `snprintf`-based logging, detected by the FreeRTOS
+stack overflow hook. Increasing to 256 words gave a measured peak usage of
+130 words. The producer, which performs no logging, uses only 34 words.
+
+### Stack Sizing (Phase 3D tasks)
+
+| Task | Allocated | Peak used (HWM) | Margin | Verdict |
+|---|---|---|---|---|
+| QPROD | 128 words (512 B) | 34 words (136 B) | 94 words (73%) | adequate |
+| QCONS | 256 words (1024 B) | 130 words (520 B) | 126 words (49%) | adequate; 128 words overflowed |
+
+### Heap Budget (runtime, full task set)
+
+| Metric | Value |
+|---|---|
+| Total heap (`configTOTAL_HEAP_SIZE`) | 15360 B |
+| Free heap (runtime) | 880 B |
+| Used heap | 14480 B (94%) |
+
+**Observation:** Free heap dropped from 9176 B (Phase 1) to 880 B after adding
+the Phase 3 task set (4 priority-inversion tasks, 1 event consumer, producer/
+consumer pair). The system is now near its heap budget; adding further tasks
+would require reducing existing stack allocations. This is why stack sizes were
+validated by measurement rather than over-provisioned.
+
+## Measurements & Evidence
+
+| File | Phase | Description |
+| `phase3_inversion_before_*.txt` | Phase 3B | Priority inversion with binary semaphore — High wait 508ms |
+| `phase3_inversion_after_*.txt` | Phase 3B | Mutex priority inheritance — High wait 302ms |
+| `phase3_event_semaphore_*.txt` | Phase 3C | ISR-to-task binary semaphore — button_event_count vs isr_raw_count |
+| `phase3_queue_dropnew_*.txt` | Phase 3D | Queue full DROP-NEW — drop/overflow counters, stack HWM, heap |
+
+---
 
 ## Known Limitations
 
@@ -227,6 +356,10 @@ any FreeRTOS API.
 | 2026-06-02 | HardFault_Handler naked attribute is outside USER CODE blocks and must be manually verified after CubeMX regeneration. vApplicationStackOverflowHook consolidated into freertos.c USER CODE BEGIN 4. |
 | 2026-06-03 | ISR-to-task latency measured under limited load; production needs worst-case analysis under full system load. (Phase 2A) |
 | 2026-06-03 | Only priority 4 (unsafe) and 6 (safe) were tested; full verification requires testing all used interrupt priorities. (Phase 2B) |
-| TBD | Priority inversion scenario is simplified for demonstration. (Phase 3) |
+| 2026-06-04 | Priority inversion scenario is simplified for demonstration; real systems require design-level avoidance, not just inheritance. (Phase 3B) |
+| 2026-06-04 | A residual TOCTOU gap exists between High's signal and its blocking lock take; safe here only because no task can preempt High in that window. (Phase 3B) |
+| 2026-06-04 | Binary semaphore coalesces multiple pending signals; this is signaling behavior, not debounce. No debounce logic is implemented. (Phase 3C) |
+| 2026-06-04 | Queue drop_count and overflow_count increment together in this demo; they diverge only with a send timeout or partial-retention policy. (Phase 3D) |
+| 2026-06-04 | Free heap is 880 B of 15360 B (94% used); the task set is near the heap budget. Adding tasks requires reducing existing stack allocations. (Phase 3) |
 | TBD | Watchdog is used as final fallback, not selective recovery. (Phase 4) |
 | TBD | This is not production firmware: no MISRA compliance, no long-duration qualification. (Phase 5) |
