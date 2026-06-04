@@ -54,6 +54,15 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 
+/* Phase demo enable flags
+ * Set to 0 to disable task creation for Phase 4 bring-up.
+ * Does NOT delete code — set back to 1 to restore previous phase demos. */
+#define ENABLE_PHASE2_LATENCY_TASK  0   /* LAT task only (LatencyMeter class kept) */
+#define ENABLE_PHASE3_PI_DEMO       0   /* PI_CTRL / PI_HIGH / PI_MED / PI_LOW     */
+#define ENABLE_PHASE3_QUEUE_DEMO    0   /* QPROD / QCONS                           */
+#define ENABLE_PHASE3_EVENT_DEMO    0   /* EVENT                                   */
+#define ENABLE_PHASE4_HEALTH_DEMO   1   /* HealthMonitor / FaultInjector           */
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -130,24 +139,62 @@ int main(void)
   xTaskCreate(Task_Processing,  "PROC", 256, NULL, 2, &hProcessing);
   xTaskCreate(Task_Monitor,     "MON",  512, NULL, 1, &hMonitor);
 
-  PI_Init();
 
+
+//  /* BEFORE */
+//  PI_Init();
+//  xTaskCreate(Task_PI_Controller, "PI_CTRL", 256, NULL, 4, &hPI_Controller);
+//  xTaskCreate(Task_PI_High,       "PI_HIGH", 256, NULL, 3, &hPI_High);
+//  xTaskCreate(Task_PI_Medium,     "PI_MED",  256, NULL, 2, &hPI_Medium);
+//  xTaskCreate(Task_PI_Low,        "PI_LOW",  256, NULL, 1, &hPI_Low);
+
+  /* AFTER */
+#if ENABLE_PHASE3_PI_DEMO
+  PI_Init();
   xTaskCreate(Task_PI_Controller, "PI_CTRL", 256, NULL, 4, &hPI_Controller);
   xTaskCreate(Task_PI_High,       "PI_HIGH", 256, NULL, 3, &hPI_High);
   xTaskCreate(Task_PI_Medium,     "PI_MED",  256, NULL, 2, &hPI_Medium);
   xTaskCreate(Task_PI_Low,        "PI_LOW",  256, NULL, 1, &hPI_Low);
+#endif
 
+
+
+//  /* BEFORE */
+//  EventDemo_Init();
+//  xTaskCreate(Task_Event, "EVENT", 256, NULL, 2, &hEvent);
+
+  /* AFTER */
+#if ENABLE_PHASE3_EVENT_DEMO
   EventDemo_Init();
   xTaskCreate(Task_Event, "EVENT", 256, NULL, 2, &hEvent);
+#endif
 
+//  /* BEFORE */
+//  QueueDemo_Init();
+//  BaseType_t qpOk = xTaskCreate(Task_QueueProducer, "QPROD", 128, NULL, 2, &hQueueProducer);
+//  BaseType_t qcOk = xTaskCreate(Task_QueueConsumer, "QCONS", 256, NULL, 1, &hQueueConsumer);
+//  if (qpOk != pdPASS || qcOk != pdPASS) {
+//      UartLogger::getInstance().log("[QUEUE] ERROR: xTaskCreate failed\r\n");
+//  }
+
+  /* AFTER */
+#if ENABLE_PHASE3_QUEUE_DEMO
   QueueDemo_Init();
-
   BaseType_t qpOk = xTaskCreate(Task_QueueProducer, "QPROD", 128, NULL, 2, &hQueueProducer);
-  //BaseType_t qcOk = xTaskCreate(Task_QueueConsumer, "QCONS", 128, NULL, 1, &hQueueConsumer);
   BaseType_t qcOk = xTaskCreate(Task_QueueConsumer, "QCONS", 256, NULL, 1, &hQueueConsumer);
   if (qpOk != pdPASS || qcOk != pdPASS) {
       UartLogger::getInstance().log("[QUEUE] ERROR: xTaskCreate failed\r\n");
   }
+#endif
+
+  /* BEFORE: 해당 위치에 아무것도 없음 */
+
+  /* AFTER */
+#if ENABLE_PHASE4_HEALTH_DEMO
+  /* Phase 4: HealthMonitor and FaultInjector tasks — added after heap freed */
+  /* xTaskCreate calls to be added after HealthMonitor class is implemented  */
+#endif
+
 
   /* USER CODE END Init */
 
@@ -187,7 +234,14 @@ int main(void)
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
-  xLatencyQueue = xQueueCreate(10, sizeof(uint32_t));
+  ///* BEFORE */
+  //xTaskCreate(task_latency, "LAT", 256, NULL, 3, NULL);
+
+  /* AFTER */
+  #if ENABLE_PHASE2_LATENCY_TASK
+    xTaskCreate(task_latency, "LAT", 256, NULL, 3, NULL);
+  #endif
+
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
@@ -196,7 +250,6 @@ int main(void)
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
-  xTaskCreate(task_latency, "LAT", 256, NULL, 3, NULL);
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
