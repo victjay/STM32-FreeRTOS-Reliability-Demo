@@ -1,0 +1,172 @@
+[SYS] SystemCoreClock=84000000
+Hello FreeRTOS
+[PI] mode=AFTER mutex priority inheritance
+[PI_CTRL] sequencing scenario
+[ACQ] task started
+[LAT] task started
+[LAT] seq,isr_cycle,task_cycle,delta_cycles,latency_us
+[ACQ] vTaskDelay  tick_before=9 elapsed=18
+[ACQ] task started
+[EVENT] consumer task started
+[PROC] processing tick
+[ACQ] task started
+[PI_LOW] acquired lock tick=46
+[PI_CTRL] done, blocking
+[PI_HIGH] got lock wait_cycles=25397064 wait_us=302346 wait_ticks=303
+[PI_MED] start CPU burn tick=358
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=531 elapsed=11
+[PI_MED] end CPU burn tick=561
+[PI_LOW] released lock tick=564
+[QUEUE] consumer task started
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=1047 elapsed=11
+[QUEUE] drop_count=130 overflow_cou[FAULT] STACK OVERFLOW
+[SYS] SystemCoreClock=84000000
+Hello FreeRTOS
+[PI] mode=AFTER mutex priority inherÿ[BOOT] PrevFault CFSR=0x00000000 HFSR=0x80000000 PC=0x20000000 MSP=0x20000BB8 PSP=0x00000000 LR=0xFFFFFFF9
+[SYS] SystemCoreClock=84000000
+Hello FreeRTOS
+[PI] mode=AFTER mutex priority inheritance
+[PI_CTRL] sequencing scenario
+[ACQ] task started
+[ACQ] vTaskDelay  tick_before=9 elapsed=12
+[ACQ] task started
+[EVENT] consumer task started
+[PROC] processing tick
+[ACQ] task started
+[PI_LOW] acquired lock tick=40
+[PI_CTRL] done, blocking
+[PI_HIGH] got lock wait_cycles=25397309 wait_us=302348 wait_ticks=303
+[PI_MED] start CPU burn tick=352
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=525 elapsed=11
+[PI_MED] end CPU burn tick=555
+[PI_LOW] released lock tick=558
+[QUEUE] consumer task started
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=1041 elapsed=11
+[QUEUE] drop_count=130 overflow_count=130
+[QUEUE] stack_hwm prod=94 cons=126 (words)
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelay  tick_before=1557 elapsed=11
+Hello FreeRTOS
+[MON] stack_hwm acq=376 proc=198 mon=423 (words)
+[MON] heap free=880 min_ever=880 (bytes)
+[ACQ] vTaskDelay  tick_before=2073 elapsed=11
+[PROC] processing tick
+[QUEUE] drop_count=220 overflow_count=220
+[QUEUE] stack_hwm prod=94 cons=126 (words)
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=2589 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelay  tick_before=3105 elapsed=11
+[QUEUE] drop_count=310 overflow_count=310
+[QUEUE] stack_hwm prod=94 cons=126 (words)
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=3621 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=4137 elapsed=11
+[QUEUE] drop_count=400 overflow_count=400
+[QUEUE] stack_hwm prod=94 cons=126 (words)
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelay  tick_before=4653 elapsed=11
+Hello FreeRTOS
+[MON] stack_hwm acq=376 proc=198 mon=366 (words)
+[MON] heap free=880 min_ever=880 (bytes)
+[ACQ] vTaskDelayUntil tick_before=5169 elapsed=11
+[PROC] processing tick
+[QUEUE] drop_count=490 overflow_count=490
+[QUEUE] stack_hwm prod=94 cons=126 (words)
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=5669 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelayUntil tick_before=6169 elapsed=11
+[QUEUE] drop_count=580 overflow_count=580
+[QUEUE] stack_hwm prod=94 cons=126 (words)
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=6669 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=7169 elapsed=11
+[QUEUE] drop_count=670 overflow_count=670
+[QUEUE] stack_hwm prod=94 cons=126 (words)
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelayUntil tick_before=7669 elapsed=11
+Hello FreeRTOS
+[MON] stack_hwm acq=376 proc=198 mon=366 (words)
+[MON] heap free=880 min_ever=880 (bytes)
+[ACQ] vTaskDelayUntil tick_before=8169 elapsed=11
+[PROC] processing tick
+[QUEUE] drop_count=760 overflow_count=760
+[QUEUE] stack_hwm prod=94 cons=126 (words)
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=8669 elapsed=11
+[SYS] SystemCoreClock=84000000
+Hello FreeRTOS
+[PI] mode=AFTER mutex priority inheritance
+[PI_CTRL] sequencing scenario
+[ACQ] task started
+[ACQ] vTaskDelay  tick_before=9 elapsed=12
+[ACQ] task started
+[EVENT] consumer task started
+[PROC] processing tick
+[ACQ] task started
+[PI_LOW] acquired lock tick=40
+[PI_CTRL] done, blocking
+[PI_HIGH] got lock wait_cycles=25397296 wait_us=302348 wait_ticks=303
+[PI_MED] start CPU burn tick=352
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=525 elapsed=11
+[PI_MED] end CPU burn tick=555
+[PI_LOW] released lock tick=558
+[QUEUE] consumer task started
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=1041 elapsed=11
+[QUEUE] drop_count=130 overflow_count=130
+[QUEUE] stack_hwm prod=94 cons=126 (words)
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelay  tick_before=1557 elapsed=11
+Hello FreeRTOS
+[MON] stack_hwm acq=376 proc=198 mon=423 (words)
+[MON] heap free=880 min_ever=880 (bytes)
+[ACQ] vTaskDelay  tick_before=2073 elapsed=11
+[PROC] processing tick
+[QUEUE] drop_count=220 overflow_count=220
+[QUEUE] stack_hwm prod=94 cons=126 (words)
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=2589 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelay  tick_before=3105 elapsed=11
+[QUEUE] drop_count=310 overflow_count=310
+[QUEUE] stack_hwm prod=94 cons=126 (words)
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=3621 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=4137 elapsed=11
+[QUEUE] drop_count=400 overflow_count=400
+[QUEUE] stack_hwm prod=94 cons=126 (words)
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelay  tick_before=4653 elapsed=11
+Hello FreeRTOS
+[MON] stack_hwm acq=376 proc=198 mon=366 (words)
+[MON] heap free=880 min_ever=880 (bytes)
+[ACQ] vTaskDelayUntil tick_before=5169 elapsed=11
+[PROC] processing tick
+[QUEUE] drop_count=490 overflow_count=490
+[QUEUE] stack_hwm prod=94 cons=126 (words)
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=5669 elapsed=11

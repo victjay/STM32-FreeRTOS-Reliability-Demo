@@ -41,8 +41,9 @@
 #include "tasks/task_pi.h"  // phase 2b
 #include "semphr.h"
 
-#include "tasks/task_event.h"  // phase 3
+#include "tasks/task_event.h"  // phase 3 binary sema
 
+#include "tasks/task_queue.h"  // phase 3 queue-full demo
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -97,6 +98,10 @@ extern "C" void PI_Init(void);
 TaskHandle_t hEvent = NULL;
 extern "C" void EventDemo_Init(void);
 
+TaskHandle_t hQueueProducer = NULL;
+TaskHandle_t hQueueConsumer = NULL;
+extern "C" void QueueDemo_Init(void);
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -134,6 +139,15 @@ int main(void)
 
   EventDemo_Init();
   xTaskCreate(Task_Event, "EVENT", 256, NULL, 2, &hEvent);
+
+  QueueDemo_Init();
+
+  BaseType_t qpOk = xTaskCreate(Task_QueueProducer, "QPROD", 128, NULL, 2, &hQueueProducer);
+  //BaseType_t qcOk = xTaskCreate(Task_QueueConsumer, "QCONS", 128, NULL, 1, &hQueueConsumer);
+  BaseType_t qcOk = xTaskCreate(Task_QueueConsumer, "QCONS", 256, NULL, 1, &hQueueConsumer);
+  if (qpOk != pdPASS || qcOk != pdPASS) {
+      UartLogger::getInstance().log("[QUEUE] ERROR: xTaskCreate failed\r\n");
+  }
 
   /* USER CODE END Init */
 
