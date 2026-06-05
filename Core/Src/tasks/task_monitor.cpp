@@ -19,7 +19,7 @@ extern TaskHandle_t hMonitor;
 void Task_Monitor(void *argument)
 {
     //UartLogger::log("[MON] task started\r\n");
-    UartLogger::getInstance().log("[ACQ] task started\r\n");
+    UartLogger::getInstance().log("[MON] task started\r\n");
     vTaskDelay(pdMS_TO_TICKS(2000)); /* 다른 task 먼저 실행되게 대기 */
 
     for (;;) {

@@ -9,6 +9,7 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "UartLogger.hpp"
+#include "HealthMonitor.hpp"
 #include <stdio.h>
 
 // origin code start
@@ -58,7 +59,15 @@ void Task_Acquisition(void *argument)
                  (unsigned long)t0, (unsigned long)elapsed);
         //UartLogger::log(buf);
         UartLogger::getInstance().log(buf);
+
+//        /* BEFORE — vTaskDelay 방식 (처음 10회), loop 내부 */
+//        vTaskDelay(pdMS_TO_TICKS(500));
+
+        /* AFTER */
+        HealthMonitor::getInstance().heartbeat(HM_TASK_ACQ);  /* work complete */
         vTaskDelay(pdMS_TO_TICKS(500));
+
+
     }
 
     /* --- vTaskDelayUntil 방식 (이후 계속) --- */
@@ -77,6 +86,13 @@ void Task_Acquisition(void *argument)
                  (unsigned long)t0, (unsigned long)elapsed);
         //UartLogger::log(buf);
         UartLogger::getInstance().log(buf);
+
+//        /* BEFORE — vTaskDelayUntil 방식 (이후 계속), loop 내부 */
+//        vTaskDelayUntil(&xLastWakeTime, xPeriod);
+
+        /* AFTER */
+        HealthMonitor::getInstance().heartbeat(HM_TASK_ACQ);  /* work complete */
         vTaskDelayUntil(&xLastWakeTime, xPeriod);
+
     }
 }

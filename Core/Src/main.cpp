@@ -37,13 +37,13 @@
 
 #include "tasks/task_latency.h" // phase 2a
 #include "gpio.h"
-
 #include "tasks/task_pi.h"  // phase 2b
 #include "semphr.h"
 
 #include "tasks/task_event.h"  // phase 3 binary sema
-
 #include "tasks/task_queue.h"  // phase 3 queue-full demo
+
+#include "HealthMonitor.hpp"   // phase 4
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -110,6 +110,9 @@ extern "C" void EventDemo_Init(void);
 TaskHandle_t hQueueProducer = NULL;
 TaskHandle_t hQueueConsumer = NULL;
 extern "C" void QueueDemo_Init(void);
+
+TaskHandle_t hHealthMonitor = NULL;
+extern "C" void Task_HealthMonitor(void *argument);
 
 /* USER CODE END PFP */
 
@@ -192,7 +195,7 @@ int main(void)
   /* AFTER */
 #if ENABLE_PHASE4_HEALTH_DEMO
   /* Phase 4: HealthMonitor and FaultInjector tasks — added after heap freed */
-  /* xTaskCreate calls to be added after HealthMonitor class is implemented  */
+  xTaskCreate(Task_HealthMonitor, "HM", 256, NULL, 5, &hHealthMonitor);
 #endif
 
 
