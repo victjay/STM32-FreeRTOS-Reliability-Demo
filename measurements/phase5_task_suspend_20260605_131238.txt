@@ -1,0 +1,81 @@
+13:12:38.306 OS
+13:12:38.307 [ACQ] vTaskDelayUntil tick_before=47174 elapsed=11
+13:12:38.307 Hello FreeRTOS
+13:12:38.307 [PROC] processing tick
+13:12:38.308 [ACQ] vTaskDelayUntil tick_before=47674 elapsed=11
+13:12:38.308 Hello FreeRTOS
+13:12:38.309 [ACQ] vTaskDelayUntil tick_before=48174 elapsed=11
+13:12:38.309 [PROC] processing tick
+13:12:38.310 [MON] stack_hwm acq=368 proc=198 mon=366 (words)
+13:12:38.310 Hello FreeRTOS
+13:12:38.311 [ACQ] vTaskDelayUntil tick_before=48674 elapsed=11
+13:12:38.312 [MON] heap free=64 min_ever=64 (bytes)
+13:12:38.602 Hello FreeRTOS
+13:12:38.687 [ACQ] vTaskDelayUntil tick_before=49174 elapsed=11
+13:12:38.723 [PROC] processing tick
+13:12:39.104 Hello FreeRTOS
+13:12:39.187 [ACQ] vTaskDelayUntil tick_before=49674 elapsed=11
+13:12:39.492 [PROC] processing tick
+13:12:39.604 Hello FreeRTOS
+13:12:39.687 [ACQ] vTaskDelayUntil tick_before=50174 elapsed=11
+13:12:40.105 Hello FreeRTOS
+13:12:40.188 [ACQ] vTaskDelayUntil tick_before=50674 elapsed=11
+13:12:40.260 [PROC] processing tick
+13:12:40.306 [TX] TASK_SUSPEND
+13:12:40.311 [FI] unknown cmd: T_SUSPEND
+13:12:40.607 Hello FreeRTOS
+13:12:40.689 [ACQ] vTaskDelayUntil tick_before=51174 elapsed=11
+13:12:41.029 [PROC] processing tick
+13:12:41.109 Hello FreeRTOS
+13:12:41.189 [ACQ] vTaskDelayUntil tick_before=51674 elapsed=11
+13:12:41.198 [MON] stack_hwm acq=368 proc=198 mon=366 (words)
+13:12:41.302 [MON] heap free=64 min_ever=64 (bytes)
+13:12:41.610 Hello FreeRTOS
+13:12:41.689 [ACQ] vTaskDelayUntil tick_before=52174 elapsed=11
+13:12:41.797 [PROC] processing tick
+13:12:42.112 Hello FreeRTOS
+13:12:42.190 [ACQ] vTaskDelayUntil tick_before=52674 elapsed=11
+13:12:42.316 [TX] TASK_SUSPEND
+13:12:42.321 [FI] TASK_SUSPEND: suspending ACQ externally
+13:12:42.567 [PROC] processing tick
+13:12:42.612 Hello FreeRTOS
+13:12:43.114 Hello FreeRTOS
+13:12:43.334 [PROC] processing tick
+13:12:43.616 Hello FreeRTOS
+13:12:44.103 [PROC] processing tick
+13:12:44.117 Hello FreeRTOS
+13:12:44.122 [HM] FAULT latched task id=0 elapsed=1926ms timeout=1500ms
+13:12:44.127 [HM] fault active - stopping IWDG feed, reset imminent
+13:12:44.408 [MON] stack_hwm acq=368 proc=198 mon=366 (words)
+13:12:44.412 [MON] heap free=64 min_ever=64 (bytes)
+13:12:44.618 Hello FreeRTOS
+13:12:44.871 [PROC] processing tick
+13:12:45.119 Hello FreeRTOS
+13:12:45.621 Hello FreeRTOS
+13:12:45.638 [PROC] processing tick
+13:12:46.121 Hello FreeRTOS
+13:12:46.400 [PROC] processing tick
+13:12:46.436 [BOOT] reset cause: PIN reset (button) ==============================>
+13:12:46.442 [BOOT] reset cause: IWDG watchdog  ==============================>
+13:12:46.453 [BOOT] WdgRecord task_id=0 latch_tick=54621 feed_stop_tick=54621 boot_count=9 iwdg_timeout~3000ms(2040-5650ms range)
+13:12:46.455 [SYS] SystemCoreClock=84000000
+13:12:46.457 Hello FreeRTOS
+13:12:46.461 [HM] registered task id=0 timeout=1500ms
+13:12:46.464 [HM] registered task id=1 timeout=2250ms
+13:12:46.469 [HM] HealthMonitor started (IWDG feed owner)
+13:12:46.470 [ACQ] task started
+13:12:46.486 [ACQ] vTaskDelay  tick_before=14 elapsed=12
+13:12:46.488 [PROC] task started
+13:12:46.493 [FI] FaultInjector started
+13:12:46.507 [PROC] processing tick
+13:12:46.597 [MON] task started
+13:12:46.958 Hello FreeRTOS
+13:12:47.002 [ACQ] vTaskDelay  tick_before=530 elapsed=11
+13:12:47.266 [PROC] processing tick
+13:12:47.460 Hello FreeRTOS
+13:12:47.518 [ACQ] vTaskDelay  tick_before=1046 elapsed=11
+13:12:47.960 Hello FreeRTOS
+13:12:48.034 [ACQ] vTaskDelay  tick_before=1562 elapsed=11
+13:12:48.042 [PROC] processing tick
+13:12:48.462 Hello FreeRTOS
+13:12:48.550 [ACQ] vTaskDelay  tick_before=2078 elapsed=11

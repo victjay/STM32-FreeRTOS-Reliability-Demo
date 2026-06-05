@@ -13,3 +13,6 @@ Release/
 *.hex
 *.map
 *.list
+tools/venv/
+tools/venv/
+tools/venv/

@@ -1,0 +1,294 @@
+12:54:52.815  FreeRTOS
+12:54:52.815 [PROC] processing tick
+12:54:52.815 [ACQ] vTaskDelayUntil tick_before=4837174 elapsed=11
+12:54:52.815 Hello FreeRTOS
+12:54:52.815 [PROC] processing tick
+12:54:52.815 [ACQ] vTaskDelayUntil tick_before=4837674 elapsed=11
+12:54:52.815 Hello FreeRTOS
+12:54:52.815 [ACQ] vTaskDelayUntil tick_before=4838174 elapsed=11
+12:54:52.815 Hello FreeRTOS
+12:54:52.815 [MON] stack_hwm acq=359 proc=198 mon=366 (words)
+12:54:52.815 [PROC] processing tick
+12:54:52.816 [MON] heap free=6904 min_ever=6904 (bytes)
+12:54:52.816 [ACQ] vTaskDelayUntil tick_before=4838674 elapsed=11
+12:54:52.816 Hello FreeRTOS
+12:54:52.816 [PROC] processing tick
+12:54:52.816 [ACQ] vTaskDelayUntil tick_before=4839174 elapsed=11
+12:54:52.816 Hello FreeRTOS
+12:54:52.816 [ACQ] vTaskDelayUntil tick_before=4839674 elapsed=11
+12:54:52.816 Hello FreeRTOS
+12:54:52.816 [PROC] processing tick
+12:54:52.816 [ACQ] vTaskDelayUntil tick_before=4840174 elapsed=11
+12:54:52.816 Hello FreeRTOS
+12:54:52.816 [PROC] processing tick
+12:54:52.817 [ACQ] vTaskDelayUntil tick_before=4840674 elapsed=11
+12:54:52.817 Hello FreeRTOS
+12:54:52.817 [ACQ] vTaskDelayUntil tick_before=4841174 elapsed=11
+12:54:52.817 Hello FreeRTOS
+12:54:52.817 [PROC] processing tick
+12:54:52.818 [MON] stack_hwm acq=359 proc=198 mon=366 (words)
+12:54:52.818 [MON] heap free=6904 min_ever=6904 (bytes)
+12:54:52.818 [ACQ] vTaskDelayUntil tick_before=4841674 elapsed=11
+12:54:52.818 Hello FreeRTOS
+12:54:52.819 [ACQ] vTaskDelayUntil tick_before=4842174 elapsed=11
+12:54:52.819 [PROC] processing tick
+12:54:52.819 Hello FreeRTOS
+12:54:52.819 [ACQ] vTaskDelayUntil tick_before=4842674 elapsed=11
+12:54:52.819 Hello FreeRTOS
+12:54:52.819 [PROC] processing tick
+12:54:52.819 [ACQ] vTaskDelayUntil tick_before=4843174 elapsed=11
+12:54:52.819 Hello FreeRTOS
+12:54:52.819 [ACQ] vTaskDelayUntil tick_before=4843674 elapsed=11
+12:54:52.819 [PROC] processing tick
+12:54:52.819 Hello FreeRTOS
+12:54:52.819 [ACQ] vTaskDelayUntil tick_before=4844174 elapsed=11
+12:54:52.819 Hello FreeRTOS
+12:54:52.819 [PROC] processing tick
+12:54:52.820 [MON] stack_hwm acq=359 proc=198 mon=366 (words)
+12:54:52.820 [MON] heap free=6904 min_ever=6904 (bytes)
+12:54:52.820 [ACQ] vTaskDelayUntil tick_before=4844674 elapsed=11
+12:54:52.820 Hello FreeRTOS
+12:54:52.820 [ACQ] vTaskDelayUntil tick_before=4845174 elapsed=11
+12:54:52.959 [PROC] process[PROC] processing tick
+12:54:53.005 [ACQ] vTaskDelayUntil tick_before=4893674 elapsed=11
+12:54:53.212 Hello FreeRTOS
+12:54:53.452 [MON] stack_hwm acq=359 proc=198 mon=366 (words)
+12:54:53.502 [MON] heap free=6904 min_ever=6904 (bytes)
+12:54:53.506 [ACQ] vTaskDelayUntil tick_before=4894174 elapsed=11
+12:54:53.713 Hello FreeRTOS
+12:54:53.729 [PROC] processing tick
+12:54:54.005 [ACQ] vTaskDelayUntil tick_before=4894674 elapsed=11
+12:54:54.214 Hello FreeRTOS
+12:54:54.504 [ACQ] vTaskDelayUntil tick_before=4895174 elapsed=11
+12:54:54.513 [PROC] processing tick
+12:54:54.715 Hello FreeRTOS
+12:54:55.005 [ACQ] vTaskDelayUntil tick_before=4895674 elapsed=11
+12:54:55.216 Hello FreeRTOS
+12:54:55.280 [PROC] processing tick
+12:54:55.506 [ACQ] vTaskDelayUntil tick_before=4896174 elapsed=11
+12:54:55.717 Hello FreeRTOS
+12:54:56.006 [ACQ] vTaskDelayUntil tick_before=4896674 elapsed=11
+12:54:56.048 [PROC] processing tick
+12:54:56.218 Hello FreeRTOS
+12:54:56.505 [ACQ] vTaskDelayUntil tick_before=4897174 elapsed=11
+12:54:56.560 [MON] stack_hwm acq=359 proc=198 mon=366 (words)
+12:54:56.564 [MON] heap free=6904 min_ever=6904 (bytes)
+12:54:56.719 Hello FreeRTOS
+12:54:56.817 [PROC] processing tick
+12:54:57.006 [ACQ] vTaskDelayUntil tick_before=4897674 elapsed=11
+12:54:57.221 Hello FreeRTOS
+12:54:57.229 [TX] TASK_SUSPEND
+12:54:57.506 [ACQ] vTaskDelayUntil tick_before=4898174 elapsed=11
+12:54:57.585 [PROC] processing tick
+12:54:57.722 Hello FreeRTOS
+12:54:58.005 [ACQ] vTaskDelayUntil tick_before=4898674 elapsed=11
+12:54:58.223 Hello FreeRTOS
+12:54:58.344 [PROC] processing tick
+12:54:58.506 [ACQ] vTaskDelayUntil tick_before=4899174 elapsed=11
+12:54:58.724 Hello FreeRTOS
+12:54:59.006 [ACQ] vTaskDelayUntil tick_before=4899674 elapsed=11
+12:54:59.113 [PROC] processing tick
+12:54:59.225 Hello FreeRTOS
+12:54:59.507 [ACQ] vTaskDelayUntil tick_before=4900174 elapsed=11
+12:54:59.670 [MON] stack_hwm acq=359 proc=198 mon=366 (words)
+12:54:59.674 [MON] heap free=6904 min_ever=6904 (bytes)
+12:54:59.726 Hello FreeRTOS
+12:54:59.881 [PROC] processing tick
+12:55:00.007 [ACQ] vTaskDelayUntil tick_before=4900674 elapsed=11
+12:55:00.227 Hello FreeRTOS
+12:55:00.507 [ACQ] vTaskDelayUntil tick_before=4901174 elapsed=11
+12:55:00.650 [PROC] processing tick
+12:55:00.729 Hello FreeRTOS
+12:55:01.007 [ACQ] vTaskDelayUntil tick_before=4901674 elapsed=11
+12:55:01.230 Hello FreeRTOS
+12:55:01.418 [PROC] processing tick
+12:55:01.507 [ACQ] vTaskDelayUntil tick_before=4902174 elapsed=11
+12:55:01.731 Hello FreeRTOS
+12:55:02.008 [ACQ] vTaskDelayUntil tick_before=4902674 elapsed=11
+12:55:02.185 [PROC] processing tick
+12:55:02.232 Hello FreeRTOS
+12:55:02.507 [ACQ] vTaskDelayUntil tick_before=4903174 elapsed=11
+12:55:02.735 [MON] stack_hwm acq=359 proc=198 mon=366 (words)
+12:55:02.737 Hello FreeRTOS
+12:55:02.781 [MON] heap free=6904 min_ever=6904 (bytes)
+12:55:02.953 [PROC] processing tick
+12:55:03.008 [ACQ] vTaskDelayUntil tick_before=4903674 elapsed=11
+12:55:03.237 Hello FreeRTOS
+12:55:03.508 [ACQ] vTaskDelayUntil tick_before=4904174 elapsed=11
+12:55:03.721 [PROC] processing tick
+12:55:03.738 Hello FreeRTOS
+12:55:04.008 [ACQ] vTaskDelayUntil tick_before=4904674 elapsed=11
+12:55:04.239 Hello FreeRTOS
+12:55:04.490 [PROC] processing tick
+12:55:04.508 [ACQ] vTaskDelayUntil tick_before=4905174 elapsed=11
+12:55:04.741 Hello FreeRTOS
+12:55:04.893 [TX] TASK_SUSPEND
+12:55:05.009 [ACQ] vTaskDelayUntil tick_before=4905674 elapsed=11
+12:55:05.243 Hello FreeRTOS
+12:55:05.261 [PROC] processing tick
+12:55:05.508 [ACQ] vTaskDelayUntil tick_before=4906174 elapsed=11
+12:55:05.743 Hello FreeRTOS
+12:55:05.787 [MON] stack_hwm acq=359 proc=198 mon=366 (words)
+12:55:05.891 [MON] heap free=6904 min_ever=6904 (bytes)
+12:55:06.008 [ACQ] vTaskDelayUntil tick_before=4906674 elapsed=11
+12:55:06.019 [PROC] processing tick
+12:55:06.245 Hello FreeRTOS
+12:55:06.508 [ACQ] vTaskDelayUntil tick_before=4907174 elapsed=11
+12:55:06.746 Hello FreeRTOS
+12:55:06.784 [PROC] processing tick
+12:55:07.008 [ACQ] vTaskDelayUntil tick_before=4907674 elapsed=11
+12:55:07.247 Hello FreeRTOS
+12:55:07.509 [ACQ] vTaskDelayUntil tick_before=4908174 elapsed=11
+12:55:07.552 [PROC] processing tick
+12:55:07.748 Hello FreeRTOS
+12:55:08.009 [ACQ] vTaskDelayUntil tick_before=4908674 elapsed=11
+12:55:08.249 Hello FreeRTOS
+12:55:08.319 [PROC] processing tick
+12:55:08.509 [ACQ] vTaskDelayUntil tick_before=4909174 elapsed=11
+12:55:08.749 Hello FreeRTOS
+12:55:08.897 [MON] stack_hwm acq=359 proc=198 mon=366 (words)
+12:55:09.006 [MON] heap free=6904 min_ever=6904 (bytes)
+12:55:09.011 [ACQ] vTaskDelayUntil tick_before=4909674 elapsed=11
+12:55:09.088 [PROC] processing tick
+12:55:09.250 Hello FreeRTOS
+12:55:09.509 [ACQ] vTaskDelayUntil tick_before=4910174 elapsed=11
+12:55:09.751 Hello FreeRTOS
+12:55:09.855 [PROC] processing tick
+12:55:10.008 [ACQ] vTaskDelayUntil tick_before=4910674 elapsed=11
+12:55:10.253 Hello FreeRTOS
+12:55:10.509 [ACQ] vTaskDelayUntil tick_before=4911174 elapsed=11
+12:55:10.623 [PROC] processing tick
+12:55:10.754 Hello FreeRTOS
+12:55:10.862 [TX] TASK_SUSPEND
+12:55:10.866 [FI] unknown cmd: T
+12:55:11.009 [ACQ] vTaskDelayUntil tick_before=4911674 elapsed=11
+12:55:11.256 Hello FreeRTOS
+12:55:11.392 [PROC] processing tick
+12:55:11.510 [ACQ] vTaskDelayUntil tick_before=4912174 elapsed=11
+12:55:11.757 Hello FreeRTOS
+12:55:12.010 [ACQ] vTaskDelayUntil tick_before=4912674 elapsed=11
+12:55:12.072 [MON] stack_hwm acq=359 proc=198 mon=366 (words)
+12:55:12.075 [MON] heap free=6904 min_ever=6904 (bytes)
+12:55:12.161 [PROC] processing tick
+12:55:12.258 Hello FreeRTOS
+12:55:12.509 [ACQ] vTaskDelayUntil tick_before=4913174 elapsed=11
+12:55:12.759 Hello FreeRTOS
+12:55:12.929 [PROC] processing tick
+12:55:13.010 [ACQ] vTaskDelayUntil tick_before=4913674 elapsed=11
+12:55:13.260 Hello FreeRTOS
+12:55:13.476 [TX] TASK_SUSPEND
+12:55:13.482 [FI] TASK_SUSPEND: suspending ACQ externally
+12:55:13.695 [PROC] processing tick
+12:55:13.761 Hello FreeRTOS
+12:55:14.262 Hello FreeRTOS
+12:55:14.463 [PROC] processing tick
+12:55:14.762 Hello FreeRTOS
+12:55:14.767 [HM] FAULT latched task id=0 elapsed=1753ms timeout=1500ms
+12:55:14.772 [HM] fault active - stopping IWDG feed, reset imminent
+12:55:15.128 [MON] stack_hwm acq=359 proc=198 mon=366 (words)
+12:55:15.132 [MON] heap free=6904 min_ever=6904 (bytes)
+12:55:15.231 [PROC] processing tick
+12:55:15.263 Hello FreeRTOS
+12:55:15.765 Hello FreeRTOS
+12:55:15.998 [PROC] processing tick
+12:55:16.266 Hello FreeRTOS
+12:55:16.765 [PROC] processing tick
+12:55:16.767 Hello FreeRTOS
+12:55:17.083 [BOOT] reset cause: PIN reset (button) ==============================>
+12:55:17.089 [BOOT] reset cause: IWDG watchdog  ==============================>
+12:55:17.099 [BOOT] WdgRecord task_id=0 latch_tick=4915448 feed_stop_tick=4915448 boot_count=4 iwdg_timeout~3000ms(2040-5650ms range)
+12:55:17.102 [SYS] SystemCoreClock=84000000
+12:55:17.103 Hello FreeRTOS
+12:55:17.107 [HM] registered task id=0 timeout=1500ms
+12:55:17.110 [HM] registered task id=1 timeout=2250ms
+12:55:17.115 [HM] HealthMonitor started (IWDG feed owner)
+12:55:17.116 [ACQ] task started
+12:55:17.133 [ACQ] vTaskDelay  tick_before=14 elapsed=12
+12:55:17.135 [PROC] task started
+12:55:17.140 [FI] FaultInjector started
+12:55:17.152 [PROC] processing tick
+12:55:17.242 [MON] task started
+12:55:17.605 Hello FreeRTOS
+12:55:17.649 [ACQ] vTaskDelay  tick_before=530 elapsed=11
+12:55:17.914 [PROC] processing tick
+12:55:18.106 Hello FreeRTOS
+12:55:18.165 [ACQ] vTaskDelay  tick_before=1046 elapsed=11
+12:55:18.607 Hello FreeRTOS
+12:55:18.680 [ACQ] vTaskDelay  tick_before=1562 elapsed=11
+12:55:18.689 [PROC] processing tick
+12:55:19.108 Hello FreeRTOS
+12:55:19.196 [ACQ] vTaskDelay  tick_before=2078 elapsed=11
+12:55:19.348 [MON] stack_hwm acq=376 proc=205 mon=423 (words)
+12:55:19.351 [MON] heap free=6904 min_ever=6904 (bytes)
+12:55:19.455 [PROC] processing tick
+12:55:19.609 Hello FreeRTOS
+12:55:19.713 [ACQ] vTaskDelay  tick_before=2594 elapsed=11
+12:55:20.110 Hello FreeRTOS
+12:55:20.229 [ACQ] vTaskDelay  tick_before=3110 elapsed=11
+12:55:20.234 [PROC] processing tick
+12:55:20.611 Hello FreeRTOS
+12:55:20.744 [ACQ] vTaskDelay  tick_before=3626 elapsed=11
+12:55:21.001 [PROC] processing tick
+12:55:21.112 Hello FreeRTOS
+12:55:21.260 [ACQ] vTaskDelay  tick_before=4142 elapsed=11
+12:55:21.613 Hello FreeRTOS
+12:55:21.776 [ACQ] vTaskDelay  tick_before=4658 elapsed=11
+12:55:21.781 [PROC] processing tick
+12:55:22.114 Hello FreeRTOS
+12:55:22.293 [ACQ] vTaskDelayUntil tick_before=5174 elapsed=11
+12:55:22.350 [TX] TASK_SUSPEND
+12:55:22.356 [FI] TASK_SUSPEND: suspending ACQ externally
+12:55:22.462 [MON] stack_hwm acq=368 proc=205 mon=366 (words)
+12:55:22.465 [MON] heap free=6904 min_ever=6904 (bytes)
+12:55:22.548 [PROC] processing tick
+12:55:22.614 Hello FreeRTOS
+12:55:23.115 Hello FreeRTOS
+12:55:23.315 [PROC] processing tick
+12:55:23.616 Hello FreeRTOS
+12:55:24.083 [PROC] processing tick
+12:55:24.117 Hello FreeRTOS
+12:55:24.122 [HM] FAULT latched task id=0 elapsed=1825ms timeout=1500ms
+12:55:24.127 [HM] fault active - stopping IWDG feed, reset imminent
+12:55:24.618 Hello FreeRTOS
+12:55:24.850 [PROC] processing tick
+12:55:25.119 Hello FreeRTOS
+12:55:25.552 [MON] stack_hwm acq=368 proc=205 mon=366 (words)
+12:55:25.555 [MON] heap free=6904 min_ever=6904 (bytes)
+12:55:25.618 [PROC] processing tick
+12:55:25.620 Hello FreeRTOS
+12:55:26.120 Hello FreeRTOS
+12:55:26.387 [PROC] processing tick
+12:55:26.434 [BOOT] reset cause: PIN reset (button) ==============================>
+12:55:26.440 [BOOT] reset cause: IWDG watchdog  ==============================>
+12:55:26.450 [BOOT] WdgRecord task_id=0 latch_tick=7020 feed_stop_tick=7020 boot_count=5 iwdg_timeout~3000ms(2040-5650ms range)
+12:55:26.453 [SYS] SystemCoreClock=84000000
+12:55:26.455 Hello FreeRTOS
+12:55:26.458 [HM] registered task id=0 timeout=1500ms
+12:55:26.462 [HM] registered task id=1 timeout=2250ms
+12:55:26.467 [HM] HealthMonitor started (IWDG feed owner)
+12:55:26.469 [ACQ] task started
+12:55:26.485 [ACQ] vTaskDelay  tick_before=14 elapsed=12
+12:55:26.487 [PROC] task started
+12:55:26.490 [FI] FaultInjector started
+12:55:26.504 [PROC] processing tick
+12:55:26.593 [MON] task started
+12:55:26.956 Hello FreeRTOS
+12:55:27.000 [ACQ] vTaskDelay  tick_before=530 elapsed=11
+12:55:27.265 [PROC] processing tick
+12:55:27.457 Hello FreeRTOS
+12:55:27.516 [ACQ] vTaskDelay  tick_before=1046 elapsed=11
+12:55:27.958 Hello FreeRTOS
+12:55:28.032 [ACQ] vTaskDelay  tick_before=1562 elapsed=11
+12:55:28.041 [PROC] processing tick
+12:55:28.458 Hello FreeRTOS
+12:55:28.547 [ACQ] vTaskDelay  tick_before=2078 elapsed=11
+12:55:28.697 [MON] stack_hwm acq=376 proc=205 mon=423 (words)
+12:55:28.701 [MON] heap free=6904 min_ever=6904 (bytes)
+12:55:28.805 [PROC] processing tick
+12:55:28.960 Hello FreeRTOS
+12:55:29.062 [ACQ] vTaskDelay  tick_before=2594 elapsed=11
+12:55:29.460 Hello FreeRTOS
+12:55:29.579 [ACQ] vTaskDelay  tick_before=3110 elapsed=11
+12:55:29.585 [PROC] processing tick
+12:55:29.961 Hello FreeRTOS
+12:55:30.095 [ACQ] vTaskDelay  tick_before=3626 elapsed=11

@@ -1,0 +1,86 @@
+13:12:31.051 ack_hwm acq=376 proc=205 mon=423 (words)
+13:12:31.052 [MON] heap free=6904 min_ever=6904 (bytes)
+13:12:31.052 [PROC] processing tick
+13:12:31.052 Hello FreeRTOS
+13:12:31.052 [ACQ] vTaskDelay  tick_before=2594 elapsed=11
+13:12:31.052 Hello FreeRTOS
+13:12:31.052 [ACQ] vTaskDelay  tick_before=3110 elapsed=11
+13:12:31.052 [PROC] processing tick
+13:12:31.052 Hello FreeRTOS
+13:12:31.052 [ACQ] vTaskDelay  tick_before=3626 elapsed=11
+13:12:31.052 [PROC] processing tick
+13:12:31.052 Hello FreeRTOS
+13:12:31.052 [ACQ] vTaskDelay  tick_before=4142 elapsed=11
+13:12:31.052 Hello FreeRTOS
+13:12:31.053 [ACQ] vTaskDelay  tick_before=4658 elapsed=11
+13:12:31.053 [PROC] processing tick
+13:12:31.053 Hello FreeRTOS
+13:12:31.053 [ACQ] vTaskDelayUntil tick_before=5174 elapsed=11
+13:12:31.053 [MON] stack_hwm acq=368 proc=205 mon=366 (words)
+13:12:31.053 [MON] heap free=6904 min_ever=6904 (bytes)
+13:12:31.054 [PROC] processing tick
+13:12:31.054 Hello FreeRTOS
+13:12:31.054 [ACQ] vTaskDelayUntil tick_before=5674 elapsed=11
+13:12:31.054 Hello FreeRTOS
+13:12:31.054 [ACQ] vTaskDelayUntil tick_before=6174 elapsed=11
+13:12:31.054 [PROC] processing tick
+13:12:31.054 Hello FreeRTOS
+13:12:31.054 [ACQ] vTaskDelayUntil tick_before=6674 elapsed=11
+13:12:31.054 [PROC] processing tick
+13:12:31.054 Hello FreeRTOS
+13:12:31.054 [ACQ] vTaskDelayUntil tick_before=7174 elapsed=11
+13:12:31.054 Hello FreeRTOS
+13:12:31.054 [ACQ] vTaskDelayUntil tick_before=7674 elapsed=11
+13:12:31.054 [PROC] processing tick
+13:12:31.055 Hello FreeRTOS
+13:12:31.055 [ACQ] vTaskDelayUntil tick_before=8174 elapsed=11
+13:12:31.055 [MON] stack_hwm acq=368 proc=205 mon=366 (words)
+13:12:31.055 [MON] heap free=6904 min_ever=6904 (bytes)
+13:12:31.055 [PROC] processing tick
+13:12:31.055 Hello FreeRTOS
+13:12:31.055 [ACQ] vTaskDelayUntil tick_before=8674 elapsed=11
+13:12:31.055 Hello FreeRTOS
+13:12:31.055 [ACQ] vTaskDelayUntil tick_before=9174 elapsed=11
+13:12:31.055 [PROC] processing tick
+13:12:31.056 Hello FreeRTOS
+13:12:31.056 [ACQ] vTaskDelayUntil tick_before=9674 elapsed=11
+13:12:31.056 Hello FreeRTOS
+13:12:31.056 [PROC] processing tick
+13:12:31.056 [ACQ] vTaskDelayUntil tick_before=10174 elapsed=11
+13:12:31.056 Hello FreeRTOS
+13:12:31.078 [ACQ] vTHello FreeRTOS
+13:12:31.181 [ACQ] vTaskDelayUntil tick_before=41674 elapsed=11
+13:12:31.580 Hello FreeRTOS
+13:12:31.681 [ACQ] vTaskDelayUntil tick_before=42174 elapsed=11
+13:12:31.799 [PROC] processing tick
+13:12:32.053 [MON] stack_hwm acq=368 proc=198 mon=366 (words)
+13:12:32.058 [MON] heap free=6904 min_ever=6904 (bytes)
+13:12:32.080 Hello FreeRTOS
+13:12:32.181 [ACQ] vTaskDelayUntil tick_before=42674 elapsed=11
+13:12:32.567 [PROC] processing tick
+13:12:32.582 Hello FreeRTOS
+13:12:32.681 [ACQ] vTaskDelayUntil tick_before=43174 elapsed=11
+13:12:33.052 [TX] HEAP_STRESS
+13:12:33.058 [FI] HEAP_STRESS: exhausting heap via pvPortMalloc loop
+13:12:33.062 [FI] HEAP_STRESS: done hook_count=1
+13:12:33.066 [FI] HEAP_STRESS: malloc failed hook confirmed
+13:12:33.083 Hello FreeRTOS
+13:12:33.182 [ACQ] vTaskDelayUntil tick_before=43674 elapsed=11
+13:12:33.336 [PROC] processing tick
+13:12:33.585 Hello FreeRTOS
+13:12:33.682 [ACQ] vTaskDelayUntil tick_before=44174 elapsed=11
+13:12:34.087 Hello FreeRTOS
+13:12:34.105 [PROC] processing tick
+13:12:34.182 [ACQ] vTaskDelayUntil tick_before=44674 elapsed=11
+13:12:34.588 Hello FreeRTOS
+13:12:34.683 [ACQ] vTaskDelayUntil tick_before=45174 elapsed=11
+13:12:34.874 [PROC] processing tick
+13:12:35.069 [MON] stack_hwm acq=368 proc=198 mon=366 (words)
+13:12:35.072 [MON] heap free=64 min_ever=64 (bytes)
+13:12:35.089 Hello FreeRTOS
+13:12:35.183 [ACQ] vTaskDelayUntil tick_before=45674 elapsed=11
+13:12:35.590 Hello FreeRTOS
+13:12:35.634 [PROC] processing tick
+13:12:35.684 [ACQ] vTaskDelayUntil tick_before=46174 elapsed=11
+13:12:36.092 Hello FreeRTOS
+13:12:36.184 [ACQ] vTaskDelayUntil tick_before=46674 elapsed=11

@@ -1,0 +1,51 @@
+13:12:50.689 N] stack_hwm acq=376 proc=205 mon=423 (words)
+13:12:50.690 [MON] heap free=6904 min_ever=6904 (bytes)
+13:12:50.690 [PROC] processing tick
+13:12:50.690 Hello FreeRTOS
+13:12:50.691 [ACQ] vTaskDelay  tick_before=2594 elapsed=11
+13:12:50.691 Hello FreeRTOS
+13:12:50.692 [ACQ] vTaskDelay  tick_before=3110 elapsed=11
+13:12:50.692 [PROC] processing tick
+13:12:50.692 Hello FreeRTOS
+13:12:50.693 [ACQ] vTaskDelay  tick_before=3626 elapsed=11
+13:12:50.693 [PROC] processing tick
+13:12:50.694 Hello FreeRTOS
+13:12:50.694 [ACQ] vTaskDelay  tick_before=4142 elapsed=11
+13:12:50.969 Hello FreeRTOS
+13:12:51.133 [ACQ] vTaskDelay  tick_before=4658 elapsed=11
+13:12:51.136 [PROC] processing tick
+13:12:51.470 Hello FreeRTOS
+13:12:51.649 [ACQ] vTaskDelayUntil tick_before=5174 elapsed=11
+13:12:51.798 [MON] stack_hwm acq=370 proc=205 mon=366 (words)
+13:12:51.802 [MON] heap free=6904 min_ever=6904 (bytes)
+13:12:51.903 [PROC] processing tick
+13:12:51.971 Hello FreeRTOS
+13:12:52.150 [ACQ] vTaskDelayUntil tick_before=5674 elapsed=11
+13:12:52.472 Hello FreeRTOS
+13:12:52.650 [ACQ] vTaskDelayUntil tick_before=6174 elapsed=11
+13:12:52.672 [PROC] processing tick
+13:12:52.689 [TX] RESET
+13:12:52.692 [FI] RESET: NVIC_SystemReset
+13:12:52.758 [BOOT] reset cause: PIN reset (button) ==============================>
+13:12:52.763 [BOOT] reset cause: software reset  ==============================>
+13:12:52.766 [SYS] SystemCoreClock=84000000
+13:12:52.768 Hello FreeRTOS
+13:12:52.772 [HM] registered task id=0 timeout=1500ms
+13:12:52.776 [HM] registered task id=1 timeout=2250ms
+13:12:52.780 [HM] HealthMonitor started (IWDG feed owner)
+13:12:52.781 [ACQ] task started
+13:12:52.798 [ACQ] vTaskDelay  tick_before=14 elapsed=12
+13:12:52.800 [PROC] task started
+13:12:52.804 [FI] FaultInjector started
+13:12:52.818 [PROC] processing tick
+13:12:52.906 [MON] task started
+13:12:53.269 Hello FreeRTOS
+13:12:53.314 [ACQ] vTaskDelay  tick_before=530 elapsed=11
+13:12:53.578 [PROC] processing tick
+13:12:53.772 Hello FreeRTOS
+13:12:53.830 [ACQ] vTaskDelay  tick_before=1046 elapsed=11
+13:12:54.272 Hello FreeRTOS
+13:12:54.346 [ACQ] vTaskDelay  tick_before=1562 elapsed=11
+13:12:54.355 [PROC] processing tick
+13:12:54.774 Hello FreeRTOS
+13:12:54.862 [ACQ] vTaskDelay  tick_before=2078 elapsed=11

@@ -1,0 +1,5 @@
+scenario,command,detection_evidence,recovery_path,reset_cause,source_log
+task_hang,TASK_SUSPEND,HealthMonitor timeout: elapsed=1926ms timeout=1500ms,stop IWDG feed -> watchdog reset,IWDG watchdog,phase5_task_suspend_20260605_131238.txt
+heap_exhaustion,HEAP_STRESS,malloc_failed_hook count=1; heap_free=0:no,no local recovery (fault state retained),none,phase5_heap_stress_20260605_131231.txt
+software_reset,RESET,FI RESET command -> NVIC_SystemReset,controlled software reset,software reset,phase5_software_reset_20260605_131250.txt
+stack_overflow,manual (Phase 1 extended),HardFault escalation CFSR=0x00009600 HFSR=0x40000000,naked HardFault handler -> NVIC_SystemReset,software reset (via NVIC),fault_test_20260602_223708.log
