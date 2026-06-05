@@ -1,0 +1,53 @@
+Hello FreeRTOS
+[PROC] processing tick
+[MON] stack_hwm acq=376 proc=205 mon=366 (words)
+[MON] heap free=6912 min_ever=6912 (bytes)
+Hello FreeRTOS
+[BOOT] reset cause: PIN reset (button) ==============================>
+[SYS] SystemCoreClock=84000000
+Hello FreeRTOS
+[HM] registered task id=0 timeout=1500ms
+[HM] registered task id=1 timeout=2250ms
+[HM] HealthMonitor started
+[ACQ] task started
+[ACQ] vTaskDelay  tick_before=13 elapsed=12
+[PROC] task started
+[FI] FaultInjector started
+[PROC] processing tick
+[MON] task started
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=528 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=1044 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=1560 elapsed=11
+[PROC] processing tick
+[FI] HEAP_STRESS: exhausting heap via pvPortMalloc loop
+[FI] HEAP_STRESS: done hook_count=1
+[FI] HEAP_STRESS: malloc failed hook confirmed
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=2076 elapsed=11
+[MON] stack_hwm acq=376 proc=205 mon=423 (words)
+[MON] heap free=0 min_ever=0 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=2592 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=3108 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=3624 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=4140 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=4656 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=5172 elapsed=11
+[MON] stack_hwm acq=368 proc=205 mon=366 (words)
+[MON] heap free=0 min_ever=0 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=5672 elapsed=11

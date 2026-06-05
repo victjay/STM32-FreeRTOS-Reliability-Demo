@@ -44,6 +44,7 @@
 #include "tasks/task_queue.h"  // phase 3 queue-full demo
 
 #include "HealthMonitor.hpp"   // phase 4
+#include "FaultInjector.hpp"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -113,6 +114,9 @@ extern "C" void QueueDemo_Init(void);
 
 TaskHandle_t hHealthMonitor = NULL;
 extern "C" void Task_HealthMonitor(void *argument);
+
+TaskHandle_t hFaultInjector  = NULL;
+extern "C" void Task_FaultInjector(void *argument);
 
 /* USER CODE END PFP */
 
@@ -196,6 +200,7 @@ int main(void)
 #if ENABLE_PHASE4_HEALTH_DEMO
   /* Phase 4: HealthMonitor and FaultInjector tasks — added after heap freed */
   xTaskCreate(Task_HealthMonitor, "HM", 256, NULL, 5, &hHealthMonitor);
+  xTaskCreate(Task_FaultInjector,  "FI", 256, NULL, 2, &hFaultInjector);
 #endif
 
 
@@ -365,8 +370,43 @@ void SystemClock_Config(void)
 
 
 /* USER CODE BEGIN 4 */
+//extern "C" void check_fault_on_boot(void)
+//{
+//    if (fault_record.magic == FAULT_MAGIC) {
+//        char buf[128];
+//        snprintf(buf, sizeof(buf),
+//            "[BOOT] PrevFault CFSR=0x%08lX HFSR=0x%08lX "
+//            "PC=0x%08lX MSP=0x%08lX PSP=0x%08lX LR=0x%08lX\r\n",
+//            fault_record.cfsr, fault_record.hfsr,
+//            fault_record.pc,   fault_record.msp,
+//            fault_record.psp,  fault_record.lr);
+//        HAL_UART_Transmit(&huart2, (uint8_t*)buf, strlen(buf), 1000);
+//        fault_record.magic = 0U;
+//    }
+//}
+
 extern "C" void check_fault_on_boot(void)
 {
+    /* Log reset cause from RCC CSR flags */
+    uint32_t csr = RCC->CSR;
+
+    if (csr & RCC_CSR_PINRSTF)  {
+        UartLogger::getInstance().log("[BOOT] reset cause: PIN reset (button) ==============================>\r\n");
+    }
+    if (csr & RCC_CSR_IWDGRSTF) {
+        UartLogger::getInstance().log("[BOOT] reset cause: IWDG watchdog  ==============================>\r\n");
+    }
+    if (csr & RCC_CSR_SFTRSTF)  {
+        UartLogger::getInstance().log("[BOOT] reset cause: software reset  ==============================>\r\n");
+    }
+    if (csr & RCC_CSR_PORRSTF)  {
+        UartLogger::getInstance().log("[BOOT] reset cause: power-on reset  ==============================>\r\n");
+    }
+
+    /* Clear reset flags */
+    __HAL_RCC_CLEAR_RESET_FLAGS();
+
+    /* HardFault record check */
     if (fault_record.magic == FAULT_MAGIC) {
         char buf[128];
         snprintf(buf, sizeof(buf),

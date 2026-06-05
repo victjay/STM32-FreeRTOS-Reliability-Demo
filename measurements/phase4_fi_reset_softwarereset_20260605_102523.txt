@@ -1,0 +1,54 @@
+2Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=49172 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=49672 elapsed=11
+[BOOT] reset cause: PIN reset (button) ==============================>
+[SYS] SystemCoreClock=84000000
+Hello FreeRTOS
+[HM] registered task id=0 timeout=1500ms
+[HM] registered task id=1 timeout=2250ms
+[HM] HealthMonitor started
+[ACQ] task started
+[ACQ] vTaskDelay  tick_before=13 elapsed=12
+[PROC] task started
+[FI] FaultInjector started
+[PROC] processing tick
+[MON] task started
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=528 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=1044 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=1560 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=2076 elapsed=11
+[MON] stack_hwm acq=376 proc=205 mon=423 (words)
+[MON] heap free=6912 min_ever=6912 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=2592 elapsed=11
+[FI] RESET: NVIC_SystemReset
+[BOOT] reset cause: PIN reset (button) ==============================>
+[BOOT] reset cause: software reset  ==============================>
+[SYS] SystemCoreClock=84000000
+Hello FreeRTOS
+[HM] registered task id=0 timeout=1500ms
+[HM] registered task id=1 timeout=2250ms
+[HM] HealthMonitor started
+[ACQ] task started
+[ACQ] vTaskDelay  tick_before=13 elapsed=12
+[PROC] task started
+[FI] FaultInjector started
+[PROC] processing tick
+[MON] task started
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=528 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=1044 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=1560 elapsed=11
+[PROC] processing tick

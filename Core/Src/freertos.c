@@ -25,7 +25,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <stdint.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -45,6 +45,8 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
+
+volatile uint32_t g_malloc_failed_hook_count = 0U;
 
 /* USER CODE END Variables */
 /* Definitions for defaultTask */
@@ -97,6 +99,10 @@ void vApplicationMallocFailedHook(void)
    FreeRTOSConfig.h, and the xPortGetFreeHeapSize() API function can be used
    to query the size of free heap space that remains (although it does not
    provide information on how the remaining heap might be fragmented). */
+
+   /* Increment counter only — no UART call (C context, no C++ allowed).
+        * FaultInjector task reads this counter and logs the result. */
+       g_malloc_failed_hook_count++;
 }
 /* USER CODE END 5 */
 
