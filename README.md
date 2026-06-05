@@ -36,12 +36,13 @@ for determinism and compatibility with CubeMX-generated code.
 - [x] Phase 1: Task Scheduling + Stack/Heap + HardFault pattern (extend)
 - [x] Phase 2: ISR + DWT Latency + NVIC Priority
 - [x] Phase 3: Mutex + Priority Inversion + Queue Policy
-- [ ] Phase 4: Fault Detection + Watchdog
+- [x] Phase 4: Fault Detection + Watchdog
   - [x] HardFault handler + FaultRecord + noinit reset pattern
   - [x] HealthMonitor (task heartbeat)
   - [x] FaultInjector (UART command triggered)
   - [x] IWDG watchdog fallback
-- [ ] Phase 5: Python Automation + README completion
+- [x] Phase 5: Python Automation + README completion
+- [ ] Phase 6 (Bonus): UART RX DMA + IDLE-line detection
 
 ---
 
@@ -178,7 +179,7 @@ measuring it requires cycle-accurate timing.
 
 ### Evidence
 - Measured ISR-to-task latency: **~16.8us** (1413 cycles @ 84MHz)
-- Log file: `measurements/latency_20260603_115219.txt'
+- Log file: `measurements/latency_20260603_115219.txt`
 
 ---
 
@@ -335,6 +336,7 @@ validated by measurement rather than over-provisioned.
 ## Measurements & Evidence
 
 | File | Phase | Description |
+|---|---|---|
 | `phase3_inversion_before_*.txt` | Phase 3B | Priority inversion with binary semaphore — High wait 508ms |
 | `phase3_inversion_after_*.txt` | Phase 3B | Mutex priority inheritance — High wait 302ms |
 | `phase3_event_semaphore_*.txt` | Phase 3C | ISR-to-task binary semaphore — button_event_count vs isr_raw_count |
@@ -384,6 +386,90 @@ a watchdog reset is used only when task state cannot be trusted.
 
 ---
 
+## Phase 5 — Python Automation + Evidence Pipeline
+
+**Completed:** 2026-06-05
+
+| Field | Content |
+|---|---|
+| **Problem** | Fault scenarios and measurements were captured manually with a serial terminal. Manual capture is not repeatable, is error-prone, and does not produce structured evidence that can be cited directly in this README. |
+| **Design choice** | A small host-side Python toolset (pyserial) owns the serial port and automates capture, fault injection, and log-to-CSV conversion. Because the firmware FaultInjector polls the same UART port, only one host process may hold the port; capture and command-send are therefore combined in one owner rather than split across processes. Commands use send-and-confirm retransmission to tolerate dropped bytes on the firmware's polling-based RX path. |
+| **Implementation** | `uart_session.py` (interactive capture + manual send), `uart_io.py` (shared `UartSession` with `send_and_confirm`), `run_fault_matrix.py` (automated HEAP_STRESS → TASK_SUSPEND → RESET, one log per scenario), `log_parser.py` (latest-match log selection → `stack_watermark.csv`, `heap.csv`, `latency.csv`, `fault_matrix.csv`). Steady-state stack/heap are taken from a dedicated baseline capture, not from a fault run. See `tools/scripts/README.md`. |
+| **Evidence** | Four CSV files generated under `measurements/csv/`. The fault matrix CSV reproduces all four scenarios with detection evidence and source-log attribution (stack overflow attributed to the Phase 1 extended log, not a UART command). |
+| **Limitation** | The host-side retransmission masks but does not fix the firmware UART RX byte loss; the proper fix is UART RX DMA (Phase 6). Parsed values reflect demo workload, not certified worst-case conditions. |
+
+### Measured Values (from generated CSV)
+
+Steady-state baseline (`phase5_baseline_*.txt` → CSV):
+
+| Task | Stack HWM (words) |
+|---|---|
+| ACQ | 368 |
+| PROC | 198 |
+| MON | 366 |
+
+| Metric | Value |
+|---|---|
+| Heap free (baseline) | 6904 bytes |
+| Heap min_ever (baseline) | 6904 bytes |
+| ISR-to-task latency | ~16.5–16.8 us (1413 cycles @ 84MHz) |
+
+**Note:** The baseline heap free (6904 B) reflects the Phase 4 minimal task set
+(HealthMonitor + FaultInjector active; Phase 2/3 demo tasks disabled by compile
+macro). It is higher than the 880 B measured in Phase 3, which had the full
+demo task set active. The figure depends on which task set is compiled in.
+
+### Toolset
+
+| Script | Role |
+|---|---|
+| `uart_session.py` | Interactive UART capture + manual command send |
+| `uart_io.py` | Shared serial I/O (`UartSession`, send-and-confirm) |
+| `run_fault_matrix.py` | Automated 3-scenario fault injection |
+| `log_parser.py` | Logs → `stack_watermark` / `heap` / `latency` / `fault_matrix` CSV |
+
+### Measurements & Evidence
+
+| File | Phase | Description |
+|---|---|---|
+| `phase5_baseline_*.txt` | Phase 5 | Steady-state capture for stack/heap baseline |
+| `phase5_heap_stress_*.txt` | Phase 5 | Automated HEAP_STRESS run |
+| `phase5_task_suspend_*.txt` | Phase 5 | Automated TASK_SUSPEND → IWDG reset run |
+| `phase5_software_reset_*.txt` | Phase 5 | Automated RESET run |
+| `csv/stack_watermark.csv` | Phase 5 | Per-sample task stack high-water marks |
+| `csv/heap.csv` | Phase 5 | Per-sample free / min-ever heap |
+| `csv/latency.csv` | Phase 5 | ISR-to-task latency samples |
+| `csv/fault_matrix.csv` | Phase 5 | Per-scenario detection evidence with source attribution |
+
+---
+
+## Design Decisions / Evaluated Alternatives
+
+### Watchdog: IWDG selected over WWDG
+
+WWDG (Window Watchdog) was evaluated but not implemented. The project fault
+model focused on task hang detection and watchdog-based system recovery. An
+LSI-based IWDG was selected because it operates independently of the system
+clock tree and provides a more suitable final fallback mechanism for RTOS
+health monitoring.
+
+### UART RX: polling now, DMA planned (Phase 6)
+
+The firmware receives FaultInjector commands one byte at a time via polling
+(`HAL_UART_Receive`), and the STM32F446 USART has no hardware RX FIFO. When the
+FaultInjector task is preempted, back-to-back bytes at 115200 baud can be
+overwritten before they are read, so a command may be received partially (for
+example `[FI] unknown cmd: T`) or dropped. This byte loss was observed and
+captured during Phase 5 automation.
+
+The host-side mitigation (`send_and_confirm` retransmission in `uart_io.py`)
+keeps automation reliable but does not address the root cause. The firmware-level
+fix — UART RX via DMA with IDLE-line detection — is tracked as Phase 6 (Bonus).
+The captured byte-loss evidence is the motivation for that work
+(`measurements/session_20260605_125452_*.txt`).
+
+---
+
 ## Known Limitations
 
 | Date | Known Limitation |
@@ -410,4 +496,6 @@ a watchdog reset is used only when task state cannot be trusted.
 | 2026-06-05 | RCC CSR reset flags are cumulative; a PIN reset flag may persist alongside a later IWDG or software reset cause. (Phase 4) |
 | 2026-06-05 | boot_count relies on a magic guard against uninitialized .noinit memory; a 1-in-2^32 magic collision could skip initialization. (Phase 4) |
 | 2026-06-05 | CubeMX regeneration strips __attribute__((naked)) from HardFault_Handler; it must be re-applied after each .ioc regeneration. (Phase 4) |
-| TBD | This is not production firmware: no MISRA compliance, no long-duration qualification. (Phase 5) |
+| 2026-06-05 | Polling-based UART RX loses bytes under task preemption (no hardware RX FIFO on STM32F446 USART); commands may be received partially or dropped. Host-side retransmission mitigates this; the firmware fix is UART RX DMA (Phase 6). (Phase 5) |
+| 2026-06-05 | CSV evidence reflects demo workload under the Phase 4 minimal task set; values depend on which task set is compiled in and are not certified worst-case figures. (Phase 5) |
+| 2026-06-05 | This is not production firmware: no MISRA compliance, no long-duration qualification, no full worst-case timing certification. (Phase 5) |
