@@ -33,14 +33,14 @@ for determinism and compatibility with CubeMX-generated code.
 ## Phases
 
 - [x] Phase 0: Environment setup + LED Blink + FreeRTOS Hello World
-- [x] Phase 1: Task Scheduling + Stack/Heap + HardFault pattern (심화)
+- [x] Phase 1: Task Scheduling + Stack/Heap + HardFault pattern (extend)
 - [x] Phase 2: ISR + DWT Latency + NVIC Priority
 - [x] Phase 3: Mutex + Priority Inversion + Queue Policy
 - [ ] Phase 4: Fault Detection + Watchdog
   - [x] HardFault handler + FaultRecord + noinit reset pattern
-  - [ ] HealthMonitor (task heartbeat)
-  - [ ] FaultInjector (UART command triggered)
-  - [ ] IWDG watchdog fallback
+  - [x] HealthMonitor (task heartbeat)
+  - [x] FaultInjector (UART command triggered)
+  - [x] IWDG watchdog fallback
 - [ ] Phase 5: Python Automation + README completion
 
 ---
@@ -99,7 +99,8 @@ This is expected behavior and led to the HardFault pattern investigation below.
 **Completed:** 2026-06-02
 
 This work started as Phase 1 stack overflow investigation and evolved into
-a complete HardFault handling pattern. Full Phase 4 (HealthMonitor, FaultInjector, IWDG) remains pending.
+a complete HardFault handling pattern. Phase 4 (HealthMonitor, FaultInjector, IWDG)
+builds on this foundation and is now complete.
 
 | | |
 |---|---|
@@ -341,6 +342,48 @@ validated by measurement rather than over-provisioned.
 
 ---
 
+## Phase 4 — Fault Detection + Watchdog Fallback
+
+| Field | Content |
+|---|---|
+| **Problem** | Tasks can stop making progress (hang, suspension, resource starvation) while the scheduler still runs. The system must detect loss of liveness and reach a safe state when local recovery is not trustworthy. |
+| **Design choice** | Heartbeat-based HealthMonitor (priority 5) detects per-task timeout. HealthMonitor is the **sole IWDG feed owner**: it refreshes the watchdog only when no fault is latched. Recovery is intentionally conservative — on fault latch, feeding stops and the IWDG resets the system, rather than attempting to resume an unknown-state task. A FaultInjector task triggers faults via UART for repeatable evidence. |
+| **Implementation** | HealthMonitor: `registerTask`/`heartbeat`/`check`, fault latched and never cleared in software, all shared access under critical section. FaultInjector (UART polling): `TASK_SUSPEND` (vTaskSuspend on ACQ), `HEAP_STRESS` (pvPortMalloc loop), `RESET`. IWDG via CubeMX (prescaler 32, reload 3000, ~3s nominal). Watchdog recovery evidence stored in `.noinit` WatchdogRecord (fault_task_id, fault_latch_tick, feed_stop_tick, boot_count) and reported on next boot together with the RCC_CSR reset cause. |
+| **Evidence** | TASK_SUSPEND → heartbeat timeout (~1.8s) → feed stop → IWDG reset → boot reports `reset cause: IWDG watchdog` and WatchdogRecord (task_id=0, boot_count). HEAP_STRESS → malloc failed hook count=1, heap free=0. |
+| **Limitation** | IWDG real timeout varies ~2.0–5.7s due to LSI tolerance. Recovery latency equals the IWDG timeout and cannot be measured at cycle resolution because DWT/tick reset on reboot; only the fault latch tick (relative to boot) is captured precisely. CPU hog is detectable only for tasks at priority ≤ 4. |
+
+### HealthMonitor as IWDG Feed Owner
+
+The HealthMonitor task is the only owner of `HAL_IWDG_Refresh()`. If the monitor
+itself stops running, the watchdog is no longer fed and the system resets. This
+is intentional: if the monitor cannot run, the system state cannot be trusted.
+Feed period (500ms) is kept well below the IWDG timeout (~3s nominal).
+
+### Fault Injection Matrix
+
+| # | Scenario | Trigger | Detection | Recovery Path | Evidence |
+|---|---|---|---|---|---|
+| 1 | Task unresponsive | `TASK_SUSPEND` (vTaskSuspend ACQ) | HealthMonitor heartbeat timeout (1500ms) | Feed stop → IWDG reset | `phase4_task_suspend_hm_timeout_*`, `phase4_iwdg_reset_*` |
+| 2 | Queue full | Producer faster than consumer | DROP-NEW + drop/overflow counters | Local counting, no reset | `phase3_queue_dropnew_*` |
+| 3 | Stack overflow | Deliberate recursion | HardFault escalation / overflow hook | Fault record + reset (Phase 1) | `fault_test_*` |
+| 4 | Heap exhaustion | `HEAP_STRESS` (pvPortMalloc loop) | `vApplicationMallocFailedHook` count | No recovery, hook logged | `phase4_heap_stress_malloc_hook_*` |
+
+Only scenario 1 escalates to a watchdog reset. Scenarios 2–4 are detected and
+logged locally without reset, consistent with the conservative recovery policy:
+a watchdog reset is used only when task state cannot be trusted.
+
+### Measurements & Evidence
+
+| File | Phase | Description |
+|---|---|---|
+| `phase4_task_suspend_hm_timeout_*` | Phase 4 | TASK_SUSPEND → HealthMonitor heartbeat timeout detection |
+| `phase4_heap_stress_malloc_hook_*` | Phase 4 | HEAP_STRESS → malloc failed hook count=1, heap free=0 |
+| `phase4_fi_reset_softwarereset_*` | Phase 4 | RESET command → software reset cause on boot |
+| `phase4_iwdg_reset_*` | Phase 4 | Fault latch → IWDG feed stop → IWDG watchdog reset |
+| `phase4_iwdg_bootcount_poweron_*` | Phase 4 | WatchdogRecord a WatchdogRecord across reset, boot_count validated |
+
+---
+
 ## Known Limitations
 
 | Date | Known Limitation |
@@ -361,5 +404,10 @@ validated by measurement rather than over-provisioned.
 | 2026-06-04 | Binary semaphore coalesces multiple pending signals; this is signaling behavior, not debounce. No debounce logic is implemented. (Phase 3C) |
 | 2026-06-04 | Queue drop_count and overflow_count increment together in this demo; they diverge only with a send timeout or partial-retention policy. (Phase 3D) |
 | 2026-06-04 | Free heap is 880 B of 15360 B (94% used); the task set is near the heap budget. Adding tasks requires reducing existing stack allocations. (Phase 3) |
-| TBD | Watchdog is used as final fallback, not selective recovery. (Phase 4) |
+| 2026-06-05 | Task-level recovery is intentionally conservative; when a task's internal state is unknown or it may hold shared resources, watchdog reset is preferred over local recovery. (Phase 4) |
+| 2026-06-05 | IWDG real timeout varies ~2.0–5.7s due to LSI tolerance (17–47kHz); the 3s target is nominal, not a certified timing guarantee. (Phase 4) |
+| 2026-06-05 | HealthMonitor detects CPU hog only for tasks at priority <= 4; higher-priority tasks or interrupt storms are not detectable and rely on IWDG fallback. (Phase 4) |
+| 2026-06-05 | RCC CSR reset flags are cumulative; a PIN reset flag may persist alongside a later IWDG or software reset cause. (Phase 4) |
+| 2026-06-05 | boot_count relies on a magic guard against uninitialized .noinit memory; a 1-in-2^32 magic collision could skip initialization. (Phase 4) |
+| 2026-06-05 | CubeMX regeneration strips __attribute__((naked)) from HardFault_Handler; it must be re-applied after each .ioc regeneration. (Phase 4) |
 | TBD | This is not production firmware: no MISRA compliance, no long-duration qualification. (Phase 5) |
