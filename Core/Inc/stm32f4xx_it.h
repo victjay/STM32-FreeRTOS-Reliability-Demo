@@ -35,6 +35,7 @@ extern "C" {
 /* ===== FaultRecord: HardFault structure ===== */
 #define FAULT_MAGIC  0xDEADBEEFU
 #define FAULT_VER    1U
+#define WDG_MAGIC  0x1DDC0DE5U   /* "WDG CODES" hex */
 
 typedef struct {
     uint32_t magic;
@@ -51,6 +52,22 @@ typedef struct {
 
 extern FaultRecord fault_record;
 /* ===== FaultRecord end ===== */
+
+/* ===== WatchdogRecord: IWDG recovery evidence (Phase 4.3) ===== */
+#define WDG_MAGIC  0x1DDC0DE5U        /* IWDG recovery record magic */
+#define WDG_VER    1U
+#define WDG_BOOT_MAGIC  0xB007C0DEU   /* separate magic for boot_count init */
+typedef struct {
+    uint32_t magic;
+    uint32_t version;
+    uint32_t fault_task_id;    /* HM_TaskId that triggered the fault */
+    uint32_t fault_latch_tick; /* tick when HealthMonitor latched fault */
+    uint32_t feed_stop_tick;   /* tick when IWDG feed stopped (same cycle) */
+    uint32_t boot_count;       /* incremented every boot, persists across reset */
+    uint32_t boot_magic;       /* validates boot_count across power cycles */
+} WatchdogRecord;
+extern WatchdogRecord watchdog_record;
+/* ===== WatchdogRecord end ===== */
 
 /* USER CODE END ET */
 

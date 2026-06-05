@@ -1,0 +1,70 @@
+ö[ACQ] vTaskDelayUntil tick_before=165674 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[BOOT] reset cause: PIN reset (button) ==============================>
+[SYS] SystemCoreClock=84000000
+Hello FreeRTOS
+[HM] registered task id=0 timeout=1500ms
+[HM] registered task id=1 timeout=2250ms
+[HM] HealthMonitor started (IWDG feed owner)
+[ACQ] task started
+[ACQ] vTaskDelay  tick_before=14 elapsed=12
+[PROC] task started
+[FI] FaultInjector started
+[PROC] processing tick
+[MON] task started
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=530 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=1046 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=1562 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=2078 elapsed=11
+[MON] stack_hwm acq=376 proc=205 mon=423 (words)
+[MON] heap free=6904 min_ever=6904 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=2594 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=3110 elapsed=11
+[PROC] processing tick
+[FI] TASK_SUSPEND: suspending ACQ externally
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[HM] FAULT latched task id=0 elapsed=1886ms timeout=1500ms
+[HM] fault active - stopping IWDG feed, reset imminent
+[MON] stack_hwm acq=376 proc=205 mon=366 (words)
+[MON] heap free=6904 min_ever=6904 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[PROC] processing tick
+Hello FreeRTOS
+[BOOT] reset cause: PIN reset (button) ==============================>
+[BOOT] reset cause: IWDG watchdog  ==============================>
+[BOOT] WdgRecord task_id=0 latch_tick=5017 feed_stop_tick=5017 boot_count=3 iwdg_timeout~3000ms(2040-5650ms range)
+[SYS] SystemCoreClock=84000000
+Hello FreeRTOS
+[HM] registered task id=0 timeout=1500ms
+[HM] registered task id=1 timeout=2250ms
+[HM] HealthMonitor started (IWDG feed owner)
+[ACQ] task started
+[ACQ] vTaskDelay  tick_before=14 elapsed=12
+[PROC] task started
+[FI] FaultInjector started
+[PROC] processing tick
+[MON] task started
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=530 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=1046 elapsed=11

@@ -50,6 +50,9 @@
 __attribute__((section(".noinit")))
 FaultRecord fault_record;
 
+__attribute__((section(".noinit")))
+WatchdogRecord watchdog_record;
+
 //extern QueueHandle_t  xLatencyQueue;       // Phase 2A latency path (existing)
 extern SemaphoreHandle_t g_buttonEventSem; // Phase 3 event path
 extern volatile uint32_t g_isrRawCount;    // observability-only ISR entry count
@@ -94,6 +97,7 @@ void NMI_Handler(void)
 /**
   * @brief This function handles Hard fault interrupt.
   */
+//void HardFault_Handler(void)
 __attribute__((naked)) void HardFault_Handler(void)
 {
   /* USER CODE BEGIN HardFault_IRQn 0 */
@@ -205,7 +209,6 @@ void EXTI15_10_IRQHandler(void)
       xSemaphoreGiveFromISR(g_buttonEventSem, &xHigherPriorityTaskWoken);
   }
   /* USER CODE END EXTI15_10_IRQn 0 */
-
   HAL_GPIO_EXTI_IRQHandler(B1_Pin);
   /* USER CODE BEGIN EXTI15_10_IRQn 1 */
   portYIELD_FROM_ISR(xHigherPriorityTaskWoken);

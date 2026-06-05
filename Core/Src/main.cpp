@@ -29,7 +29,7 @@
 
 #include <cstring>    // strlen
 #include <cstdio>     // snprintf
-#include "stm32f4xx_it.h"  // FaultRecord, FAULT_MAGIC, fault_record 선언
+#include "stm32f4xx_it.h"  // FaultRecord, FAULT_MAGIC, fault_record, iwdg time
 
 #include "dwt_init.h"
 #include "latency_queue.h"
@@ -45,6 +45,7 @@
 
 #include "HealthMonitor.hpp"   // phase 4
 #include "FaultInjector.hpp"
+#include "iwdg.h"          /* phase 4.3 — IWDG */
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -117,6 +118,8 @@ extern "C" void Task_HealthMonitor(void *argument);
 
 TaskHandle_t hFaultInjector  = NULL;
 extern "C" void Task_FaultInjector(void *argument);
+
+extern "C" WatchdogRecord watchdog_record;
 
 /* USER CODE END PFP */
 
@@ -216,6 +219,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART2_UART_Init();
+  MX_IWDG_Init();   /* phase 4.3 — start IWDG (counter begins immediately) */
   /* USER CODE BEGIN 2 */
   check_fault_on_boot();
 
@@ -417,6 +421,27 @@ extern "C" void check_fault_on_boot(void)
             fault_record.psp,  fault_record.lr);
         HAL_UART_Transmit(&huart2, (uint8_t*)buf, strlen(buf), 1000);
         fault_record.magic = 0U;
+    }
+
+    /* Watchdog recovery record (Phase 4.3) */
+    if (watchdog_record.boot_magic != WDG_BOOT_MAGIC) {
+        /* First boot after power-on: .noinit holds garbage, initialise */
+        watchdog_record.boot_magic = WDG_BOOT_MAGIC;
+        watchdog_record.boot_count = 0U;
+    }
+    watchdog_record.boot_count++;   /* always increment on boot */
+
+    if (watchdog_record.magic == WDG_MAGIC) {
+        char wbuf[200];
+        snprintf(wbuf, sizeof(wbuf),
+            "[BOOT] WdgRecord task_id=%lu latch_tick=%lu feed_stop_tick=%lu "
+            "boot_count=%lu iwdg_timeout~3000ms(2040-5650ms range)\r\n",
+            (unsigned long)watchdog_record.fault_task_id,
+            (unsigned long)watchdog_record.fault_latch_tick,
+            (unsigned long)watchdog_record.feed_stop_tick,
+            (unsigned long)watchdog_record.boot_count);
+        HAL_UART_Transmit(&huart2, (uint8_t*)wbuf, strlen(wbuf), 1000);
+        watchdog_record.magic = 0U;   /* clear after reading */
     }
 }
 /* USER CODE END 4 */
