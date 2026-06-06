@@ -45,7 +45,10 @@
 
 #include "HealthMonitor.hpp"   // phase 4
 #include "FaultInjector.hpp"
-#include "iwdg.h"          /* phase 4.3 — IWDG */
+#include "iwdg.h"          	// phase 4.3 — IWDG
+
+#include "uart_dma_rx.h"	// phase 6 dma
+#include "dma.h"   /* phase 6: MX_DMA_Init prototype */
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -218,6 +221,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();              /* phase 6: must run before USART2 (DMA link) */
   MX_USART2_UART_Init();
   MX_IWDG_Init();   /* phase 4.3 — start IWDG (counter begins immediately) */
   /* USER CODE BEGIN 2 */
@@ -226,6 +230,10 @@ int main(void)
   char buf[40];
   snprintf(buf, sizeof(buf), "[SYS] SystemCoreClock=%lu\r\n", SystemCoreClock);
   UartLogger::getInstance().log(buf);
+
+#ifdef FI_RX_DMA
+  uart_dma_rx_init_queue();   /* create cmd queue before scheduler/ISR */
+#endif
 
   /* USER CODE END 2 */
 

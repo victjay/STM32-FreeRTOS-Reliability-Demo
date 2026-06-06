@@ -1,0 +1,71 @@
+TOS
+[ACQ] vTaskDelayUntil tick_before=36174 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=36674 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=37174 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=37674 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=370 proc=198 mon=366 (words)
+[MON] heap free=6296 min_ever=6296 (bytes)
+[ACQ] vTaskDelayUntil tick_before=38174 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=38674 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=39174 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=39674 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=40174 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=40674 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[MON] stack_hwm acq=370 proc=198 mon=366 (words)
+[ACQ] vTaskDelayUntil tick_before=41174 elapsed=11
+[MON] heap free=6296 min_ever=6296 (bytes)
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=41674 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=42174 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelayUntil tick_before=42674 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=43174 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=43674 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelayUntil tick_before=44174 elapsed=11
+[MON] stack_hwm acq=370 proc=198 mon=366 (words)
+[MON] heap free=6296 min_ever=6296 (bytes)
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil ticHello FreeRTOS
+[MON] stack_hwm acq=376 proc=202 mon=366 (words)
+[MON] heap free=6296 min_ever=6296 (bytes)
+[ACQ] vTaskDelayUntil tick_before=5174 elapsed=11
+[FI] frame.len=12 data0=48
+[FI] HEAP_STRESS: exhausting heap via pvPortMalloc loop
+[FI] HEAP_STRESS: done hook_count=1
+[FI] HEAP_STRESS: malloc failed hook confirmed
+[FI] frame.len=13 data0=54
+[FI] TASK_SUSPEND: suspending ACQ externally
+[FI] frame.len=12 data0=48
+[FI] HEAP_STRESS: exhausting heap via pvPortMalloc loop
+[FI] HEAP_STRESS: done hook_count=2
+[FI] HEAP_STRESS: malloc failed hook confirmed
+[PROC] processing tick
+Hello FreeRTOS
+Hello FreeRTOS
+[PROC] processing tick
+

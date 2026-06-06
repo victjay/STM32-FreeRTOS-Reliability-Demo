@@ -12,6 +12,8 @@
 #include "stm32f4xx_hal.h"
 #include <string.h>
 #include <stdio.h>
+#include "queue.h"
+#include "uart_dma_rx.h"
 
 /* ACQ task handle — declared in main.cpp */
 extern TaskHandle_t hAcquisition;
@@ -83,19 +85,124 @@ static void fi_dispatch(const char *cmd)
  * Command format: ASCII string terminated by '\n'.
  * Max command length: FI_CMD_BUF_SIZE - 1 bytes.
  */
+//extern "C" void Task_FaultInjector(void *argument)
+//{
+//    (void)argument;
+//
+//    char    buf[FI_CMD_BUF_SIZE];
+//    uint8_t byte;
+//    uint8_t idx = 0;
+//
+//    UartLogger::getInstance().log("[FI] FaultInjector started\r\n");
+//
+//    for (;;) {
+//        HAL_StatusTypeDef status =
+//            HAL_UART_Receive(&huart2, &byte, 1, 100);
+//
+//        if (status == HAL_OK) {
+//            if (byte == '\n' || byte == '\r') {
+//                if (idx > 0) {
+//                    buf[idx] = '\0';
+//                    fi_dispatch(buf);
+//                    idx = 0;
+//                }
+//            }
+//            else {
+//                if (idx < FI_CMD_BUF_SIZE - 1) {
+//                    buf[idx++] = (char)byte;
+//                } else {
+//                    /* Buffer overflow — discard and reset */
+//                    UartLogger::getInstance().log(
+//                        "[FI] cmd buffer overflow, discarding\r\n");
+//                    idx = 0;
+//                }
+//            }
+//        }
+//        /* HAL_TIMEOUT is expected every 100ms — no action needed */ // <-fail
+//        if (status == HAL_TIMEOUT) {
+//            vTaskDelay(pdMS_TO_TICKS(10));  /* yield to lower priority tasks */
+//        }
+//    }
+//}
+
 extern "C" void Task_FaultInjector(void *argument)
 {
     (void)argument;
 
-    char    buf[FI_CMD_BUF_SIZE];
-    uint8_t byte;
-    uint8_t idx = 0;
+    char buf[FI_CMD_BUF_SIZE];
 
     UartLogger::getInstance().log("[FI] FaultInjector started\r\n");
 
+#ifdef FI_RX_DMA
+    /* ---- Phase 6A-1: DMA circular + IDLE line ---- */
+    UartLogger::getInstance().log("[FI] RX mode: DMA + IDLE\r\n");
+
+    /* Start DMA RX now that this consumer task is alive.
+     * The command queue was created before the scheduler started. */
+    uart_dma_rx_start();
+
+    /* TEMP DEBUG */
+    {
+        char dbg[100];
+        snprintf(dbg, sizeof(dbg),
+                 "[FI] st=%lu errcode=0x%lX RxState=0x%lX hdmarx=%p NDTR=%lu\r\n",
+                 (unsigned long)uart_dma_rx_dbg_status(),
+                 (unsigned long)uart_dma_rx_dbg_errorcode(),
+                 (unsigned long)uart_dma_rx_dbg_rxstate(),
+                 uart_dma_rx_dbg_hdmarx(),
+                 (unsigned long)uart_dma_rx_dbg_ndtr());
+        UartLogger::getInstance().log(dbg);
+    }
+    QueueHandle_t cmdQueue = uart_dma_rx_get_queue();
+
+    UartCmdFrame_t frame;
+
     for (;;) {
-        HAL_StatusTypeDef status =
-            HAL_UART_Receive(&huart2, &byte, 1, 100);
+        if (xQueueReceive(cmdQueue, &frame, portMAX_DELAY) == pdTRUE) {
+
+        	 /* TEMP DEBUG — remove after diagnosis */
+        	    {
+        	        char dbg[48];
+        	        snprintf(dbg, sizeof(dbg), "[FI] frame.len=%u data0=%02X\r\n",
+        	                 (unsigned)frame.len,
+        	                 (frame.len > 0) ? frame.data[0] : 0);
+        	        UartLogger::getInstance().log(dbg);
+        	    }
+
+            /* IDLE delimits the frame; trim trailing CR/LF/whitespace so
+             * existing string commands still match in fi_dispatch(). */
+            uint16_t n = frame.len;
+            while (n > 0u &&
+                   (frame.data[n - 1] == '\r' ||
+                    frame.data[n - 1] == '\n' ||
+                    frame.data[n - 1] == ' '  ||
+                    frame.data[n - 1] == '\t')) {
+                n--;
+            }
+
+            if (n == 0u) {
+                continue;   /* empty frame (e.g. lone CRLF) — ignore */
+            }
+            if (n > (FI_CMD_BUF_SIZE - 1)) {
+                UartLogger::getInstance().log("[FI] cmd too long, discarding\r\n");
+                continue;
+            }
+
+            memcpy(buf, frame.data, n);
+            buf[n] = '\0';
+
+            fi_dispatch(buf);   /* unchanged dispatch logic */
+        }
+    }
+#else
+    /* ---- Legacy baseline: HAL_UART_Receive polling (byte-loss prone) ---- */
+    UartLogger::getInstance().log("[FI] RX mode: polling (baseline)\r\n");
+
+    uint8_t byte;
+    uint8_t idx = 0;
+
+    for (;;) {
+        HAL_StatusTypeDef status = HAL_UART_Receive(&huart2, &byte, 1, 100);
 
         if (status == HAL_OK) {
             if (byte == '\n' || byte == '\r') {
@@ -104,21 +211,18 @@ extern "C" void Task_FaultInjector(void *argument)
                     fi_dispatch(buf);
                     idx = 0;
                 }
-            }
-            else {
+            } else {
                 if (idx < FI_CMD_BUF_SIZE - 1) {
                     buf[idx++] = (char)byte;
                 } else {
-                    /* Buffer overflow — discard and reset */
-                    UartLogger::getInstance().log(
-                        "[FI] cmd buffer overflow, discarding\r\n");
+                    UartLogger::getInstance().log("[FI] cmd buffer overflow, discarding\r\n");
                     idx = 0;
                 }
             }
         }
-        /* HAL_TIMEOUT is expected every 100ms — no action needed */ // <-fail
         if (status == HAL_TIMEOUT) {
             vTaskDelay(pdMS_TO_TICKS(10));  /* yield to lower priority tasks */
         }
     }
+#endif
 }

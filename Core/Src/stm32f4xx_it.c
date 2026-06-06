@@ -26,6 +26,9 @@
 #include <string.h>
 #include "latency_queue.h"
 #include "semphr.h"
+
+#include "uart_dma_rx.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -202,7 +205,11 @@ void DMA1_Stream5_IRQHandler(void)
 void USART2_IRQHandler(void)
 {
   /* USER CODE BEGIN USART2_IRQn 0 */
-
+  if (__HAL_UART_GET_FLAG(&huart2, UART_FLAG_IDLE) != RESET)
+  {
+    __HAL_UART_CLEAR_IDLEFLAG(&huart2);   /* SR then DR read clears IDLE */
+    uart_dma_rx_on_idle();                /* minimal ISR-side framing */
+  }
   /* USER CODE END USART2_IRQn 0 */
   HAL_UART_IRQHandler(&huart2);
   /* USER CODE BEGIN USART2_IRQn 1 */

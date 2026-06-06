@@ -1,0 +1,65 @@
+TOS
+[ACQ] vTaskDelayUntil tick_before=12674 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=13174 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=13674 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=370 proc=198 mon=366 (words)
+[MON] heap free=6296 min_ever=6296 (bytes)
+[ACQ] vTaskDelayUntil tick_before=14174 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=14674 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=15174 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=15674 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=16174 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=16674 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=370 proc=198 mon=366 (words)
+[MON] heap free=6296 min_ever=6296 (bytes)
+[ACQ] vTaskDelayUntil tick_before=17174 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelayUntil tick_before=17674 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=18174 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=18674 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelayUntil tick_before=19174 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=19674 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=370 proc=198 mon=366 (words)
+[MON] heap free=6296 min_ever=6296 (bytes)
+[ACQ] vTaskDelayUntil tick_before=20174 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelayUntil tick_before=20674 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=21174 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_[FI] frame.len=1 data0=0A
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=370 proc=198 mon=366 (words)
+[MON] heap free=6296 min_ever=6296 (bytes)
+[ACQ] vTaskDelayUntil tick_before=35174 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=35674 elapsed=11
+[PROC] processing tick
+
