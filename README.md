@@ -42,7 +42,9 @@ for determinism and compatibility with CubeMX-generated code.
   - [x] FaultInjector (UART command triggered)
   - [x] IWDG watchdog fallback
 - [x] Phase 5: Python Automation + README completion
-- [ ] Phase 6 (Bonus): UART RX DMA + IDLE-line detection
+- [x] Phase 6 (Bonus): UART RX DMA + IDLE-line detection
+  - [x] Phase 6A-1: UART RX DMA circular + IDLE line + QueueFromISR
+  - [ ] Phase 6A-2: DMA RX error / USART ORE / timeout recovery
 
 ---
 
@@ -470,6 +472,38 @@ The captured byte-loss evidence is the motivation for that work
 
 ---
 
+## Phase 6A-1 — UART RX via DMA Circular + IDLE Line
+
+**Completed:** 2026-06-06
+
+| Field | Content |
+|---|---|
+| **Problem** | FaultInjector received commands with `HAL_UART_Receive` polling (1 byte, 100ms timeout). The STM32F446 USART has no hardware RX FIFO, so when the task was preempted, consecutive bytes overran and were lost — observed as partial commands (`[FI] unknown cmd: T`). |
+| **Design choice** | Replace polling with USART2 RX DMA in circular mode plus UART IDLE-line detection for variable-length command framing. The IDLE ISR computes frame length from the DMA NDTR counter and posts one frame via `xQueueSendFromISR`; the FaultInjector task consumes frames with `xQueueReceive`. A compile switch `FI_RX_DMA` keeps the legacy polling path for direct before/after comparison. The `uart_dma_rx` module owns the command queue (producer-owns-transport); FaultInjector retrieves it via `uart_dma_rx_get_queue()`. |
+| **Implementation** | DMA1 Stream5, Channel 4, circular, byte/byte (CubeMX-generated, RM0390-mapped). NVIC priority 6 for both USART2 and DMA1_Stream5 IRQ (FromISR-safe, configMAX_SYSCALL=5). IDLE handled in `USART2_IRQHandler` USER CODE: flag clear → `uart_dma_rx_on_idle()` → NDTR-based length → frame copy → queue. The queue is created before the scheduler starts; DMA reception starts on FaultInjector task entry. Existing `fi_dispatch()` reused unchanged after trailing CR/LF/whitespace trim. |
+| **Evidence** | Normal: three spaced commands (HEAP_STRESS / TASK_SUSPEND / HEAP_STRESS) parsed as separate frames (len=12/13/12, data0='H'/'T'/'H') and dispatched correctly. See `measurements/phase6a1_dma_rx_20260606_142545.log`. Limitation baseline: five back-to-back `TASK_SUSPEND` (65B, no idle gap) overran the 64B circular buffer and yielded a single 1-byte frame. See `measurements/phase6a1_dma_rx_20260606_142226.log`. |
+| **Limitation** | UART IDLE framing requires a small inter-command idle gap; sending more than the 64-byte buffer back-to-back with no gap overruns the circular buffer. The IDLE ISR copies up to 64 bytes (MVP); for higher throughput the ISR should publish indices only and defer copy/parse to task context. Buffer-overrun / DMA error / USART ORE handling is deferred to Phase 6A-2. |
+
+### Debugging Note — HAL_OK but DMA Not Running
+
+`HAL_UART_Receive_DMA` returned `HAL_OK`, yet no data was received and NDTR stayed
+at the buffer size. Root cause: `main.c` had been manually converted to `main.cpp`,
+so the `MX_DMA_Init()` call that CubeMX newly generated was never added to `main.cpp`.
+DMA1 clock and the DMA1_Stream5 NVIC vector were therefore never enabled, so the
+stream did not run despite the HAL success return. The fault was isolated by logging
+the start status, `huart2.hdmarx`, `huart2.RxState`, and the DMA NDTR counter
+step by step, separating "HAL reports success" from "hardware actually transferring".
+Diagnostic hooks (`uart_dma_rx_dbg_*`) are retained for reuse in Phase 6A-2.
+
+### RX Path Toggle
+
+| `FI_RX_DMA` | RX path | Purpose |
+|---|---|---|
+| defined (default) | DMA circular + IDLE line | Phase 6A-1 |
+| undefined | `HAL_UART_Receive` polling | legacy byte-loss baseline |
+
+---
+
 ## Known Limitations
 
 | Date | Known Limitation |
@@ -499,3 +533,6 @@ The captured byte-loss evidence is the motivation for that work
 | 2026-06-05 | Polling-based UART RX loses bytes under task preemption (no hardware RX FIFO on STM32F446 USART); commands may be received partially or dropped. Host-side retransmission mitigates this; the firmware fix is UART RX DMA (Phase 6). (Phase 5) |
 | 2026-06-05 | CSV evidence reflects demo workload under the Phase 4 minimal task set; values depend on which task set is compiled in and are not certified worst-case figures. (Phase 5) |
 | 2026-06-05 | This is not production firmware: no MISRA compliance, no long-duration qualification, no full worst-case timing certification. (Phase 5) |
+| 2026-06-06 | UART IDLE-based framing needs a small inter-command idle gap; a burst larger than the 64-byte DMA buffer with no gap overruns the circular buffer (observed: 5×13B → single 1-byte frame). |
+| 2026-06-06 | The IDLE ISR copies up to 64 bytes inline; for higher baudrate/throughput the ISR should publish buffer indices only and defer copy/parse to task context. |
+| 2026-06-06 | A manually converted main.cpp does not receive CubeMX-regenerated init calls (e.g. MX_DMA_Init); these must be re-added by hand after regeneration. |
