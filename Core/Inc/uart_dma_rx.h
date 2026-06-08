@@ -72,6 +72,25 @@ uint32_t uart_dma_rx_get_restart_count(void);
 uint32_t uart_dma_rx_get_long_frame_count(void);
 uint32_t uart_dma_rx_get_app_overflow_count(void);
 
+/* ---- Phase 6A-2 / step 4: test injection hooks (TASK CONTEXT ONLY) ---- */
+
+/* Inject one RX error into the SAME pending-flag path as the real
+ * HAL_UART_ErrorCallback. Does NOT perform recovery itself; the next
+ * uart_dma_rx_service() handles it. */
+void uart_dma_rx_inject_error(uint32_t errorCode);
+
+/* Inject `count` errors, running the real service path after each one.
+ * This drives restart + consecutive_fail + threshold escalation through
+ * the actual recovery policy (no counter shortcuts). TASK CONTEXT ONLY. */
+void uart_dma_rx_inject_error_repeat(uint32_t errorCode, uint32_t count);
+
+/* Inject one application-level long-frame event (observation only,
+ * NOT escalated). */
+void uart_dma_rx_inject_long_frame(void);
+
+/* Snapshot of recovery counters for the DMA_RX_STATS command. */
+uint32_t uart_dma_rx_get_consecutive_fail(void);   /* current consecutive_fail */
+
 #ifdef __cplusplus
 }
 #endif

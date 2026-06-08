@@ -153,16 +153,33 @@ uint32_t uart_dma_rx_get_restart_count(void)      { return s_rx_restart_count; }
 uint32_t uart_dma_rx_get_long_frame_count(void)   { return s_long_frame_count; }
 uint32_t uart_dma_rx_get_app_overflow_count(void) { return s_app_overflow_count; }
 
-/* ISR context (called from HAL_UART_IRQHandler error path).
- * MINIMAL ONLY: no log, no restart, no HealthMonitor, no FreeRTOS API. */
-void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
+///* ISR context (called from HAL_UART_IRQHandler error path).
+// * MINIMAL ONLY: no log, no restart, no HealthMonitor, no FreeRTOS API. */
+//void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
+//{
+//    if (huart != &huart2) {
+//        return;
+//    }
+//    s_rx_last_error_code = huart->ErrorCode;
+//    s_rx_error_pending   = true;
+//    s_rx_error_count++;
+//}
+
+/* Common entry point for both real errors (ISR) and injected errors (task).
+ * Sets the pending flag + captures error code + counts. Does NOT recover. */
+static void uart_dma_rx_mark_error_pending(uint32_t errorCode)
 {
-    if (huart != &huart2) {
-        return;
-    }
-    s_rx_last_error_code = huart->ErrorCode;
+    s_rx_last_error_code = errorCode;
     s_rx_error_pending   = true;
     s_rx_error_count++;
+}
+
+/* ISR context (HAL error path). MINIMAL: no log/restart/HealthMonitor/RTOS API. */
+void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
+{
+    if (huart == &huart2) {
+        uart_dma_rx_mark_error_pending(huart->ErrorCode);
+    }
 }
 
 /* Restart circular DMA reception after an error. Returns HAL status.
@@ -179,6 +196,36 @@ static HAL_StatusTypeDef uart_dma_rx_restart(void)
     s_read_pos = 0u;
     __HAL_UART_ENABLE_IT(&huart2, UART_IT_IDLE);
     return st;
+}
+
+/* ---- step 4: test injection (TASK CONTEXT ONLY) ---- */
+
+void uart_dma_rx_inject_error(uint32_t errorCode)
+{
+    /* Same pending-flag path as the real ISR callback.
+     * Recovery is performed later by uart_dma_rx_service(). */
+    uart_dma_rx_mark_error_pending(errorCode);
+}
+
+void uart_dma_rx_inject_error_repeat(uint32_t errorCode, uint32_t count)
+{
+    /* Drive the REAL recovery path `count` times: inject -> service.
+     * No counter shortcuts; escalation (if reached) happens inside service(). */
+    for (uint32_t i = 0U; i < count; i++) {
+        uart_dma_rx_mark_error_pending(errorCode);
+        uart_dma_rx_service();
+    }
+}
+
+void uart_dma_rx_inject_long_frame(void)
+{
+    /* Application-level abnormal input: observation only, not escalated. */
+    s_long_frame_count++;
+}
+
+uint32_t uart_dma_rx_get_consecutive_fail(void)
+{
+    return s_consecutive_fail;
 }
 
 /* TASK CONTEXT ONLY. Called periodically by the consumer task. */
