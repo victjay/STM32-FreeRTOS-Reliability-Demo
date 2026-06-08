@@ -439,18 +439,56 @@ extern "C" void check_fault_on_boot(void)
     }
     watchdog_record.boot_count++;   /* always increment on boot */
 
+//    WatchdogRecord v1
+//    if (watchdog_record.magic == WDG_MAGIC) {
+//        char wbuf[200];
+//        snprintf(wbuf, sizeof(wbuf),
+//            "[BOOT] WdgRecord task_id=%lu latch_tick=%lu feed_stop_tick=%lu "
+//            "boot_count=%lu iwdg_timeout~3000ms(2040-5650ms range)\r\n",
+//            (unsigned long)watchdog_record.fault_task_id,
+//            (unsigned long)watchdog_record.fault_latch_tick,
+//            (unsigned long)watchdog_record.feed_stop_tick,
+//            (unsigned long)watchdog_record.boot_count);
+//        HAL_UART_Transmit(&huart2, (uint8_t*)wbuf, strlen(wbuf), 1000);
+//        watchdog_record.magic = 0U;   /* clear after reading */
+//    }
+
+    //    WatchdogRecord v2
     if (watchdog_record.magic == WDG_MAGIC) {
-        char wbuf[200];
-        snprintf(wbuf, sizeof(wbuf),
-            "[BOOT] WdgRecord task_id=%lu latch_tick=%lu feed_stop_tick=%lu "
-            "boot_count=%lu iwdg_timeout~3000ms(2040-5650ms range)\r\n",
-            (unsigned long)watchdog_record.fault_task_id,
-            (unsigned long)watchdog_record.fault_latch_tick,
-            (unsigned long)watchdog_record.feed_stop_tick,
-            (unsigned long)watchdog_record.boot_count);
-        HAL_UART_Transmit(&huart2, (uint8_t*)wbuf, strlen(wbuf), 1000);
-        watchdog_record.magic = 0U;   /* clear after reading */
-    }
+            char wbuf[256];
+
+            if (watchdog_record.version == WDG_VER) {
+                /* v2 record: safe to read v2 escalation fields */
+                snprintf(wbuf, sizeof(wbuf),
+                    "[BOOT] WdgRecord v%lu src=%lu task_id=%lu latch_tick=%lu "
+                    "feed_stop_tick=%lu rx_fail=%lu rx_err=0x%lX "
+                    "boot_count=%lu iwdg_timeout~3000ms(2040-5650ms range)\r\n",
+                    (unsigned long)watchdog_record.version,
+                    (unsigned long)watchdog_record.fault_source,
+                    (unsigned long)watchdog_record.fault_task_id,
+                    (unsigned long)watchdog_record.fault_latch_tick,
+                    (unsigned long)watchdog_record.feed_stop_tick,
+                    (unsigned long)watchdog_record.rx_consecutive_fail,
+                    (unsigned long)watchdog_record.rx_last_error_code,
+                    (unsigned long)watchdog_record.boot_count);
+            } else {
+                /* magic OK but version mismatch (e.g. stale v1 after reflash):
+                 * legacy layout — do NOT read v2 fields */
+                snprintf(wbuf, sizeof(wbuf),
+                    "[BOOT] WdgRecord (legacy v%lu) task_id=%lu latch_tick=%lu "
+                    "feed_stop_tick=%lu boot_count=%lu\r\n",
+                    (unsigned long)watchdog_record.version,
+                    (unsigned long)watchdog_record.fault_task_id,
+                    (unsigned long)watchdog_record.fault_latch_tick,
+                    (unsigned long)watchdog_record.feed_stop_tick,
+                    (unsigned long)watchdog_record.boot_count);
+            }
+
+            HAL_UART_Transmit(&huart2, (uint8_t*)wbuf, strlen(wbuf), 1000);
+            watchdog_record.magic = 0U;   /* clear after reading */
+        }
+
+
 }
 /* USER CODE END 4 */
 
