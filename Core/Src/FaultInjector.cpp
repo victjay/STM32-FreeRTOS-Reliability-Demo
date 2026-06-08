@@ -155,19 +155,60 @@ extern "C" void Task_FaultInjector(void *argument)
     }
     QueueHandle_t cmdQueue = uart_dma_rx_get_queue();
 
+    // before
+//    UartCmdFrame_t frame;
+//
+//    for (;;) {
+//        if (xQueueReceive(cmdQueue, &frame, portMAX_DELAY) == pdTRUE) {
+//
+//        	 /* TEMP DEBUG — remove after diagnosis */
+//        	    {
+//        	        char dbg[48];
+//        	        snprintf(dbg, sizeof(dbg), "[FI] frame.len=%u data0=%02X\r\n",
+//        	                 (unsigned)frame.len,
+//        	                 (frame.len > 0) ? frame.data[0] : 0);
+//        	        UartLogger::getInstance().log(dbg);
+//        	    }
+//
+//            /* IDLE delimits the frame; trim trailing CR/LF/whitespace so
+//             * existing string commands still match in fi_dispatch(). */
+//            uint16_t n = frame.len;
+//            while (n > 0u &&
+//                   (frame.data[n - 1] == '\r' ||
+//                    frame.data[n - 1] == '\n' ||
+//                    frame.data[n - 1] == ' '  ||
+//                    frame.data[n - 1] == '\t')) {
+//                n--;
+//            }
+//
+//            if (n == 0u) {
+//                continue;   /* empty frame (e.g. lone CRLF) — ignore */
+//            }
+//            if (n > (FI_CMD_BUF_SIZE - 1)) {
+//                UartLogger::getInstance().log("[FI] cmd too long, discarding\r\n");
+//                continue;
+//            }
+//
+//            memcpy(buf, frame.data, n);
+//            buf[n] = '\0';
+//
+//            fi_dispatch(buf);   /* unchanged dispatch logic */
+//        }
+//    }
     UartCmdFrame_t frame;
 
     for (;;) {
-        if (xQueueReceive(cmdQueue, &frame, portMAX_DELAY) == pdTRUE) {
+        /* Run RX recovery service first so a pending error is handled before
+         * any new frame can clear the consecutive-failure counter.
+         * TASK CONTEXT — uart_dma_rx_service may call HealthMonitor.
+         * NOTE: this command task drives the UART RX recovery service to avoid
+         * adding a separate task in this demo; the recovery POLICY itself lives
+         * in uart_dma_rx (service/escalation), not in FaultInjector. */
+        uart_dma_rx_service();
 
-        	 /* TEMP DEBUG — remove after diagnosis */
-        	    {
-        	        char dbg[48];
-        	        snprintf(dbg, sizeof(dbg), "[FI] frame.len=%u data0=%02X\r\n",
-        	                 (unsigned)frame.len,
-        	                 (frame.len > 0) ? frame.data[0] : 0);
-        	        UartLogger::getInstance().log(dbg);
-        	    }
+        /* Timeout (not portMAX_DELAY) so the loop wakes periodically to run
+         * the recovery service even when no command arrives. */
+        if (xQueueReceive(cmdQueue, &frame, pdMS_TO_TICKS(100)) == pdTRUE) {
 
             /* IDLE delimits the frame; trim trailing CR/LF/whitespace so
              * existing string commands still match in fi_dispatch(). */
@@ -181,19 +222,25 @@ extern "C" void Task_FaultInjector(void *argument)
             }
 
             if (n == 0u) {
-                continue;   /* empty frame (e.g. lone CRLF) — ignore */
-            }
-            if (n > (FI_CMD_BUF_SIZE - 1)) {
+                /* Empty frame (e.g. lone CR/LF): RX/IDLE/queue path is alive,
+                 * but nothing to dispatch. Treat as a healthy receive. */
+                uart_dma_rx_notify_rx_ok();
+            } else if (n > (FI_CMD_BUF_SIZE - 1)) {
+                /* Application-level oversized/malformed input.
+                 * Not escalated, and NOT treated as recovery success. */
                 UartLogger::getInstance().log("[FI] cmd too long, discarding\r\n");
-                continue;
+            } else {
+                /* Valid command frame: RX path is healthy/recovered. */
+                uart_dma_rx_notify_rx_ok();
+
+                memcpy(buf, frame.data, n);
+                buf[n] = '\0';
+                fi_dispatch(buf);   /* unchanged dispatch logic */
             }
-
-            memcpy(buf, frame.data, n);
-            buf[n] = '\0';
-
-            fi_dispatch(buf);   /* unchanged dispatch logic */
         }
     }
+
+
 #else
     /* ---- Legacy baseline: HAL_UART_Receive polling (byte-loss prone) ---- */
     UartLogger::getInstance().log("[FI] RX mode: polling (baseline)\r\n");
