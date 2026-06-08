@@ -7,6 +7,7 @@
 
 
 #include "HealthMonitor.hpp"
+#include "HealthMonitor_C.h"   /* C wrapper declaration */
 #include "UartLogger.hpp"
 #include "FreeRTOS.h"
 #include "task.h"
@@ -19,8 +20,6 @@
 /* iwdg handle defined in iwdg.c */
 extern "C" IWDG_HandleTypeDef hiwdg;
 
-
-
 /* ------------------------------------------------------------------ */
 /* Singleton                                                           */
 /* ------------------------------------------------------------------ */
@@ -31,8 +30,18 @@ HealthMonitor& HealthMonitor::getInstance()
     return instance;
 }
 
+//HealthMonitor::HealthMonitor()
+//    : faultDetected(false)
+//{
+//    memset(entries, 0, sizeof(entries));
+//}
+
 HealthMonitor::HealthMonitor()
-    : faultDetected(false)
+    : faultDetected(false),
+      extFaultActive(false),
+      extFaultSource(0U),
+      extFaultErrorCode(0U),
+      extFaultConsecutive(0U)
 {
     memset(entries, 0, sizeof(entries));
 }
@@ -142,6 +151,58 @@ int HealthMonitor::getFaultTaskId()
     return result;
 }
 
+/* ---- reportExternalFault (TASK CONTEXT ONLY) ---- */
+void HealthMonitor::reportExternalFault(uint32_t source,
+                                        uint32_t errorCode,
+                                        uint32_t consecutiveFail)
+{
+    bool accepted = false;
+
+    taskENTER_CRITICAL();
+    if (!faultDetected) {              /* first-fault-wins: don't overwrite */
+        extFaultActive      = true;
+        extFaultSource      = source;
+        extFaultErrorCode   = errorCode;
+        extFaultConsecutive = consecutiveFail;
+        faultDetected       = true;    /* shared trigger: stops IWDG feed */
+        accepted            = true;
+    }
+    taskEXIT_CRITICAL();
+
+    if (accepted) {
+        char buf[96];
+        snprintf(buf, sizeof(buf),
+                 "[HM] external fault reported src=%lu err=0x%lX consec=%lu\r\n",
+                 (unsigned long)source,
+                 (unsigned long)errorCode,
+                 (unsigned long)consecutiveFail);
+        UartLogger::getInstance().log(buf);
+    }
+}
+
+/* ---- atomic snapshot ---- */
+HM_ExternalFaultSnapshot HealthMonitor::getExternalFaultSnapshot()
+{
+    HM_ExternalFaultSnapshot s;
+    taskENTER_CRITICAL();
+    s.active          = extFaultActive;
+    s.source          = extFaultSource;
+    s.errorCode       = extFaultErrorCode;
+    s.consecutiveFail = extFaultConsecutive;
+    taskEXIT_CRITICAL();
+    return s;
+}
+
+/* C wrapper. TASK CONTEXT ONLY. */
+extern "C" void HealthMonitor_ReportExternalFault(uint32_t source,
+                                                  uint32_t errorCode,
+                                                  uint32_t consecutiveFail)
+{
+    HealthMonitor::getInstance().reportExternalFault(source, errorCode, consecutiveFail);
+}
+
+
+
 /* ------------------------------------------------------------------ */
 /* Task_HealthMonitor                                                  */
 /* ------------------------------------------------------------------ */
@@ -194,12 +255,31 @@ extern "C" void Task_HealthMonitor(void *argument)
 
                 /* Save watchdog recovery record to .noinit (survives reset) */
                 TickType_t now = xTaskGetTickCount();
+//                watchdog_record.magic            = WDG_MAGIC;
+//                watchdog_record.version          = WDG_VER;
+//                watchdog_record.fault_task_id    = (uint32_t)hm.getFaultTaskId();
+//                watchdog_record.fault_latch_tick = now;
+//                watchdog_record.feed_stop_tick   = now;  /* same cycle as latch */
+                /* boot_count is managed in check_fault_on_boot(), not here */
+
                 watchdog_record.magic            = WDG_MAGIC;
                 watchdog_record.version          = WDG_VER;
-                watchdog_record.fault_task_id    = (uint32_t)hm.getFaultTaskId();
                 watchdog_record.fault_latch_tick = now;
                 watchdog_record.feed_stop_tick   = now;  /* same cycle as latch */
                 /* boot_count is managed in check_fault_on_boot(), not here */
+
+                HM_ExternalFaultSnapshot ext = hm.getExternalFaultSnapshot();
+                if (ext.active) {
+                	watchdog_record.fault_source        = ext.source;
+                	watchdog_record.fault_task_id       = 0xFFFFFFFFU;  /* N/A for ext */
+                	watchdog_record.rx_consecutive_fail = ext.consecutiveFail;
+                	watchdog_record.rx_last_error_code  = ext.errorCode;
+                } else {
+                	watchdog_record.fault_source        = WDG_SRC_TASK_HEARTBEAT;
+                	watchdog_record.fault_task_id       = (uint32_t)hm.getFaultTaskId();
+                	watchdog_record.rx_consecutive_fail = 0U;
+                	watchdog_record.rx_last_error_code  = 0U;
+                }
 
                 UartLogger::getInstance().log(
                     "[HM] fault active - stopping IWDG feed, reset imminent\r\n");
