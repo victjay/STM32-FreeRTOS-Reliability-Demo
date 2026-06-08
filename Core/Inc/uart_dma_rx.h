@@ -21,6 +21,7 @@
 extern "C" {
 #endif
 
+
 /* TEMP DEBUG */
 uint32_t uart_dma_rx_dbg_status(void);
 uint32_t uart_dma_rx_dbg_errorcode(void);
@@ -52,6 +53,24 @@ QueueHandle_t uart_dma_rx_get_queue(void);
 
 /* Called from USART2_IRQHandler on IDLE detection (ISR context). */
 void uart_dma_rx_on_idle(void);
+
+/* ---- Phase 6A-2: RX error recovery ---- */
+
+/* Service the RX recovery policy. TASK CONTEXT ONLY.
+ * Checks the error-pending flag (set by HAL_UART_ErrorCallback in ISR),
+ * restarts DMA, increments consecutive failure counter, and escalates
+ * to HealthMonitor after 3 consecutive failures. */
+void uart_dma_rx_service(void);
+
+/* Notify that a normal frame was received (recovery confirmed).
+ * TASK CONTEXT ONLY. Clears the consecutive failure counter. */
+void uart_dma_rx_notify_rx_ok(void);
+
+/* Observation counters (evidence). */
+uint32_t uart_dma_rx_get_error_count(void);
+uint32_t uart_dma_rx_get_restart_count(void);
+uint32_t uart_dma_rx_get_long_frame_count(void);
+uint32_t uart_dma_rx_get_app_overflow_count(void);
 
 #ifdef __cplusplus
 }
