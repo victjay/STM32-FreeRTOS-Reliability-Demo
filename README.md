@@ -5,6 +5,29 @@ It demonstrates hardware-aware embedded software design through ISR boundary man
 deterministic timing measurement, resource ownership, stack/heap monitoring,
 fault detection, watchdog fallback, and evidence-based debugging.
 
+## Quick Review (for reviewers)
+
+This is not a FreeRTOS example run; it is a reliability/debug demo built around
+measure → reproduce → fix → verify, with evidence for each claim.
+
+**Demonstrates**
+1. ISR-to-task handoff with FreeRTOS-safe interrupt priority (NVIC boundary tested)
+2. DWT CYCCNT cycle-level latency measurement
+3. Stack/heap monitoring + HardFault post-mortem record (.noinit)
+4. Priority inversion reproduction and mutex inheritance (before/after measured)
+5. HealthMonitor-owned IWDG watchdog fallback (conservative recovery)
+6. UART RX DMA + IDLE-line command receiver (fixes polling byte loss)
+7. DMA RX recovery policy: local restart → 3-failure escalation → IWDG reset
+
+**Best evidence**
+- Phase 2A — ISR-to-task latency ~16.8 us (1413 cycles @ 84 MHz)
+- Phase 3B — priority inversion reduced 508 ms → 302 ms (mutex inheritance)
+- Phase 4  — TASK_SUSPEND → heartbeat timeout → IWDG reset (WdgRecord src=0)
+- Phase 6A-1 — HAL_OK but DMA not running: root-caused to missing MX_DMA_Init
+- Phase 6A-2 — DMA_RX_ERROR_REPEAT3 → WdgRecord v2 src=1 rx_fail=3 rx_err=0xE17
+
+See per-phase sections below for design rationale, evidence, and limitations.
+
 ## Hardware
 
 - Board: NUCLEO-F446RE
@@ -27,7 +50,7 @@ for determinism and compatibility with CubeMX-generated code.
 | Layer | Language | Reason |
 |---|---|---|
 | HAL / CubeMX generated | C | CubeMX regeneration compatibility |
-| ISR handlers | C | Deterministic, no C++ overhead |
+| ISR handlers | C | CubeMX/C ABI compatibility; avoids exceptions, dynamic allocation, and C++ runtime dependencies at the interrupt boundary |
 | Application tasks / classes | C++ | OOP structure, UartLogger, fault interfaces |
 
 ## Phases
@@ -45,6 +68,16 @@ for determinism and compatibility with CubeMX-generated code.
 - [x] Phase 6 (Bonus): UART RX DMA + IDLE-line detection
   - [x] Phase 6A-1: UART RX DMA circular + IDLE line + QueueFromISR
   - [x] Phase 6A-2: DMA RX error recovery policy + escalation to IWDG
+
+## Runtime Task Map
+
+| Task | Priority | Stack (words) | Role | Heartbeat |
+|---|---:|---:|---|---|
+| HM   | 5  | 256  | HealthMonitor, sole IWDG feed owner | owns IWDG refresh |
+| ACQ  | 3  | 512  | periodic acquisition demo | monitored |
+| PROC | 2  | 256  | processing demo | monitored |
+| FI   | 2  | 256  | UART command + RX recovery service tick | not a heartbeat source |
+| MON  | 1  | 512  | stack/heap monitor | diagnostic |
 
 ---
 
@@ -126,10 +159,10 @@ builds on this foundation and is now complete.
 
 ### Reset Strategy
 
-| Event | Reset method | Reason |
-|---|---|---|
+| Event     | Reset method         | Reason                                        |
+|-----------|----------------------|-----------------------------------------------|
 | HardFault | `NVIC_SystemReset()` | Fault cause known, immediate controlled reset |
-| Task hang (pending) | IWDG timeout | Software unresponsive, final fallback |
+| Task hang | IWDG timeout         | Software unresponsive, final fallback |
 
 ### HardFault Handler Design Note
 
@@ -144,7 +177,6 @@ During development, three approaches were tried before reaching the final design
 2. naked ASM + `HAL_UART_Transmit` — HAL unreliable in fault context confirmed
 3. USART2 register polling + FaultRecord + `NVIC_SystemReset()` — final design, verified
 
----
 
 ## Measurements & Evidence
 
@@ -159,6 +191,10 @@ The progression across three attempts reflects deliberate fault diagnosis:
 register values (CFSR/HFSR/BFAR) were used at each stage to understand
 failure mode and inform the next design decision.
 
+**Note:** RCC_CSR reset flags are reported as flags, not mutually exclusive
+causes — PINRSTF and IWDGRSTF can both appear after a button press followed by
+an IWDG reset. The logs print each flag that is set.
+
 ---
 
 ## Phase 2A — ISR-to-Task Communication + DWT Latency
@@ -169,7 +205,7 @@ measuring it requires cycle-accurate timing.
 
 ### Design Choice
 - EXTI ISR + FreeRTOS queue to defer processing from interrupt context to task context
-- DWT CYCCNT for cycle-accurate latency measurement (nanosecond resolution on Cortex-M4)
+- DWT CYCCNT provides cycle-level timing resolution (~11.9 ns per cycle at 84 MHz).
 - ISR captures DWT->CYCCNT immediately on entry (first instruction)
 - Task captures DWT->CYCCNT immediately on queue receive
 
@@ -208,18 +244,19 @@ any FreeRTOS API.
 
 ### Interrupt Priority Table
 
-| Priority | Zone     | FreeRTOS FromISR API | Result                       |
-|----------|----------|----------------------|------------------------------|
-| 0~4      | Unsafe   | Not allowed          | System freeze (configASSERT) |
-| 5        | Boundary | configMAX_SYSCALL    | —                            |
-| 6~15     | Safe     | Allowed              | Normal operation             |
+| Priority | Zone     | FreeRTOS FromISR API | Result                                                     |
+|----------|----------|----------------------|------------------------------------------------------------|
+| 0~4      | Unsafe   | Not allowed          | configASSERT → freeze (priority 4 tested)                  |
+| 5        | Boundary | configMAX_SYSCALL    | configured boundary, expected safe, not explicitly tested  |
+| 6~15     | Safe     | Allowed              | normal operation (priority 6 tested)                       |
+
 
 ---
 ## Phase 3A — Mutex + UartLogger Priority Inheritance
 
 **Completed:** 2026-06-04
 
-| | |
+|||
 |---|---|
 | **Problem** | Shared UART access from multiple tasks can interleave output and cause priority inversion if a low-priority task holds the port while a high-priority task waits. |
 | **Design choice** | Use a mutex (not a binary semaphore) for UART protection. FreeRTOS mutexes support priority inheritance, which bounds the blocking time of a high-priority waiter. UartLogger uses `osMutexPrioInherit` explicitly rather than relying on defaults. |
@@ -233,7 +270,7 @@ any FreeRTOS API.
 
 **Completed:** 2026-06-04
 
-| | |
+|||
 |---|---|
 | **Problem** | When a low-priority task holds a lock a high-priority task needs, a medium-priority task can preempt the low task and indirectly block the high task — unbounded priority inversion. |
 | **Design choice** | Reproduce inversion deterministically, then mitigate with mutex priority inheritance. A controller task (P=4) sequences the scenario via handshake semaphores so ordering does not depend on startup delays. A compile switch `PI_USE_MUTEX` toggles the lock between binary semaphore (no inheritance, BEFORE) and mutex (inheritance, AFTER). |
@@ -455,14 +492,13 @@ LSI-based IWDG was selected because it operates independently of the system
 clock tree and provides a more suitable final fallback mechanism for RTOS
 health monitoring.
 
-### UART RX: polling now, DMA planned (Phase 6)
+### UART RX: polling baseline → DMA fix (Phase 6)
 
-The firmware receives FaultInjector commands one byte at a time via polling
-(`HAL_UART_Receive`), and the STM32F446 USART has no hardware RX FIFO. When the
-FaultInjector task is preempted, back-to-back bytes at 115200 baud can be
-overwritten before they are read, so a command may be received partially (for
-example `[FI] unknown cmd: T`) or dropped. This byte loss was observed and
-captured during Phase 5 automation.
+The firmware initially received commands one byte at a time via polling
+(`HAL_UART_Receive`); the STM32F446 USART has no hardware RX FIFO, so a
+preempted task lost back-to-back bytes (observed in Phase 5). Phase 6A-1
+replaced this path with UART RX DMA + IDLE-line detection. The polling path
+is retained behind the `FI_RX_DMA` compile switch as a before/after baseline.
 
 The host-side mitigation (`send_and_confirm` retransmission in `uart_io.py`)
 keeps automation reliable but does not address the root cause. The firmware-level
@@ -515,6 +551,25 @@ Diagnostic hooks (`uart_dma_rx_dbg_*`) are retained for reuse in Phase 6A-2.
 | **Implementation** | ISR (`HAL_UART_ErrorCallback`) and injection share one entry point `mark_error_pending()` (sets pending flag + error code + count, nothing else). `uart_dma_rx_service()` (task context) reads the pending flag, restarts DMA, increments `consecutive_fail`, and at threshold 3 calls `HealthMonitor_ReportExternalFault()` (first-fault-wins). The command task calls `service()` once per loop (100ms `xQueueReceive` timeout) and `notify_rx_ok()` on a valid/empty frame. Recovery success = a later normal frame, not the restart API return. FaultInjector commands drive the real path for deterministic verification. |
 | **Evidence** | REPEAT3 → external fault → IWDG feed stop → reset → `WdgRecord v2 src=1 task_id=0xFFFFFFFF rx_fail=3 rx_err=0xE17`. TASK_SUSPEND still records `src=0 task_id=0` (Phase 4 path intact). LONG_FRAME counted only (`long_frame=1`, no reset). ERROR_ONCE → local restart, no reset. See `measurements/phase6a2_*.log`. |
 | **Limitation** | Hardware ORE/TE reproduction is environment-dependent and not forced; the recovery policy is verified deterministically via command injection that joins the same pending-flag path. A single `bool` pending flag coalesces multiple errors arriving before the service task runs. The 3-failure threshold is a demo choice, not a certified value. |
+
+### Phase 6A Recovery Data Flow
+
+```
+USART2 RX
+  → DMA circular + IDLE-line ISR        (ISR: flag/length only)
+  → xQueueSendFromISR                    (one frame per IDLE)
+FaultInjector task
+  → command dispatch
+  → uart_dma_rx_service()                (TASK: restart + consecutive_fail)
+       3 consecutive failures →
+  → HealthMonitor_ReportExternalFault()  (TASK only; first-fault-wins)
+HealthMonitor task
+  → fault latched → stop IWDG feed
+IWDG
+  → controlled reset (~3 s)
+boot
+  → WatchdogRecord v2 report (src, rx_fail, rx_err)
+```
 
 ### Recovery Escalation Ladder
 
@@ -574,10 +629,24 @@ authoritative escalation evidence is the boot `WdgRecord` instead.
 | phase6a2_long_frame_20260609_133600.log | Phase 6A-2 | LONG_FRAME counted only, not escalated |
 | phase6a2_single_recovery_20260609_133448.log | Phase 6A-2 | ERROR_ONCE → local restart, no reset |
 
+*. ERROR_ONCE verifies that a single injected RX error does not escalate. Cumulative
+counters are visible via DMA_RX_STATS, but consecutive_fail is primarily validated
+by the REPEAT3 boot evidence, since STATS itself arrives as a normal RX frame and
+clears the counter.
 
+---
 
+## Major Limitations
 
+- Demo workload only; not worst-case-timing certified, no MISRA, no long-duration qualification.
+- Hardware ORE/TE is not physically forced; deterministic injected errors exercise the same recovery path.
+- UART IDLE ISR copies the frame inline; production should defer copy/parse to task context.
+- Watchdog reset is a conservative fallback, not selective per-task recovery.
+- Stack/heap headroom depends on which task set is compiled in (per-phase build macros).
 
+(Full per-phase limitations are listed in the table below.)
+
+---
 
 ## Known Limitations
 
@@ -615,3 +684,4 @@ authoritative escalation evidence is the boot `WdgRecord` instead.
 | 2026-06-09 | A single bool pending flag coalesces multiple RX errors arriving before the service task runs. |
 | 2026-06-09 | The 3 consecutive-failure escalation threshold is a demo choice, not a certified value. |
 | 2026-06-09 | DMA_RX_STATS arrives as a normal frame and clears consecutive_fail before printing; single-error counts are observed via boot WdgRecord, not STATS. |
+
