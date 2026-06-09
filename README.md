@@ -44,7 +44,7 @@ for determinism and compatibility with CubeMX-generated code.
 - [x] Phase 5: Python Automation + README completion
 - [x] Phase 6 (Bonus): UART RX DMA + IDLE-line detection
   - [x] Phase 6A-1: UART RX DMA circular + IDLE line + QueueFromISR
-  - [ ] Phase 6A-2: DMA RX error / USART ORE / timeout recovery
+  - [x] Phase 6A-2: DMA RX error recovery policy + escalation to IWDG
 
 ---
 
@@ -504,6 +504,81 @@ Diagnostic hooks (`uart_dma_rx_dbg_*`) are retained for reuse in Phase 6A-2.
 
 ---
 
+## Phase 6A-2 — UART/DMA RX Recovery Policy + Escalation
+
+**Completed:** 2026-06-09
+
+| Field | Content |
+|---|---|
+| **Problem** | A DMA RX path can hit recoverable errors (USART overrun, DMA transfer error). The system must recover locally when possible, but must not retry forever — repeated failure means the receive path can no longer be trusted and a controlled reset is safer than continuing. |
+| **Design choice** | Graduated response built on the Phase 4 IWDG path: (1) a single error → local DMA restart + increment a consecutive-failure counter; (2) a normal frame → counter cleared (recovery confirmed); (3) three consecutive failures → the path is declared unreliable and the fault is escalated to HealthMonitor, which stops feeding the IWDG → controlled reset. Escalation reuses the existing Phase 4 reset path; no new reset mechanism. Application-level abnormal input (long frame / queue overflow) is counted only, never escalated. |
+| **Implementation** | ISR (`HAL_UART_ErrorCallback`) and injection share one entry point `mark_error_pending()` (sets pending flag + error code + count, nothing else). `uart_dma_rx_service()` (task context) reads the pending flag, restarts DMA, increments `consecutive_fail`, and at threshold 3 calls `HealthMonitor_ReportExternalFault()` (first-fault-wins). The command task calls `service()` once per loop (100ms `xQueueReceive` timeout) and `notify_rx_ok()` on a valid/empty frame. Recovery success = a later normal frame, not the restart API return. FaultInjector commands drive the real path for deterministic verification. |
+| **Evidence** | REPEAT3 → external fault → IWDG feed stop → reset → `WdgRecord v2 src=1 task_id=0xFFFFFFFF rx_fail=3 rx_err=0xE17`. TASK_SUSPEND still records `src=0 task_id=0` (Phase 4 path intact). LONG_FRAME counted only (`long_frame=1`, no reset). ERROR_ONCE → local restart, no reset. See `measurements/phase6a2_*.log`. |
+| **Limitation** | Hardware ORE/TE reproduction is environment-dependent and not forced; the recovery policy is verified deterministically via command injection that joins the same pending-flag path. A single `bool` pending flag coalesces multiple errors arriving before the service task runs. The 3-failure threshold is a demo choice, not a certified value. |
+
+### Recovery Escalation Ladder
+
+| Consecutive failures | Judgment | Action |
+|---|---|---|
+| 0 (normal frame) | healthy | `consecutive_fail = 0` |
+| 1 | transient fault | local DMA restart |
+| 2 | suspicious, still recoverable | local DMA restart |
+| 3 | repeated recovery failure → path unreliable | escalate → HealthMonitor → IWDG reset |
+
+A normal frame at any point clears the counter — only *consecutive* failures escalate.
+
+### Fault Classification
+
+| Event | Escalated? | Handling |
+|---|---|---|
+| USART ORE / DMA transfer error | Yes | local restart, then escalate after 3 consecutive |
+| Long frame / queue overflow | No | counted only (observation) |
+
+### ISR vs Task Responsibility
+
+| Concern | Location | Reason |
+|---|---|---|
+| Error detection, flag/count | ISR (`HAL_UART_ErrorCallback`) | minimal ISR work |
+| Restart, counter, threshold, escalation | Task (`uart_dma_rx_service`) | policy decisions, may call HealthMonitor |
+| `HealthMonitor_ReportExternalFault` | Task only | uses critical section; never ISR-safe |
+
+The command task drives the RX recovery service periodically to avoid adding a
+separate task in this demo; the recovery policy itself lives in `uart_dma_rx`,
+not in FaultInjector.
+
+### Design Notes
+
+**Stack-aware logging.** `snprintf` consumes significant stack. On the deep call
+chain (command task → dispatch → inject_error_repeat → service → escalation), a
+stack buffer + `snprintf` overflowed the 256-word FaultInjector task stack. The
+escalation log was reduced to a fixed string; diagnostic values are preserved in
+the `.noinit` WatchdogRecord and reported at boot. ISR is not the only stack-
+constrained context — a shallow task stack on a deep call chain fails the same way.
+
+**Injection joins the real path.** Injected errors do not set the result directly.
+They set the same pending flag as the real `HAL_UART_ErrorCallback`; escalation is
+always decided inside `service()` (no counter shortcuts), so the test exercises the
+actual recovery policy.
+
+**Observability shares the RX channel.** `DMA_RX_STATS` arrives as a normal frame,
+which itself clears `consecutive_fail` via `notify_rx_ok()` before the stats are
+printed. So a single-error count is not directly observable through STATS; the
+authoritative escalation evidence is the boot `WdgRecord` instead.
+
+### Measurements & Evidence
+
+| File | Phase | Description |
+|---|---|---|
+| phase6a2_escalation_20260609_133525.log | Phase 6A-2 | REPEAT3 → escalation → IWDG reset → WdgRecord src=1 rx_fail=3 rx_err=0xE17 |
+| phase6a2_heartbeat_regression_20260609_133659.log | Phase 6A-2 | TASK_SUSPEND → WdgRecord src=0 (Phase 4 path intact) |
+| phase6a2_long_frame_20260609_133600.log | Phase 6A-2 | LONG_FRAME counted only, not escalated |
+| phase6a2_single_recovery_20260609_133448.log | Phase 6A-2 | ERROR_ONCE → local restart, no reset |
+
+
+
+
+
+
 ## Known Limitations
 
 | Date | Known Limitation |
@@ -536,3 +611,7 @@ Diagnostic hooks (`uart_dma_rx_dbg_*`) are retained for reuse in Phase 6A-2.
 | 2026-06-06 | UART IDLE-based framing needs a small inter-command idle gap; a burst larger than the 64-byte DMA buffer with no gap overruns the circular buffer (observed: 5×13B → single 1-byte frame). |
 | 2026-06-06 | The IDLE ISR copies up to 64 bytes inline; for higher baudrate/throughput the ISR should publish buffer indices only and defer copy/parse to task context. |
 | 2026-06-06 | A manually converted main.cpp does not receive CubeMX-regenerated init calls (e.g. MX_DMA_Init); these must be re-added by hand after regeneration. |
+| 2026-06-09 | Hardware ORE/TE is not force-reproduced; recovery policy is verified via command injection joining the same pending-flag path. |
+| 2026-06-09 | A single bool pending flag coalesces multiple RX errors arriving before the service task runs. |
+| 2026-06-09 | The 3 consecutive-failure escalation threshold is a demo choice, not a certified value. |
+| 2026-06-09 | DMA_RX_STATS arrives as a normal frame and clears consecutive_fail before printing; single-error counts are observed via boot WdgRecord, not STATS. |
