@@ -1,0 +1,58 @@
+[ACQ] vTaskDelayUntil tick_before=6174 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=6674 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=7174 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelayUntil tick_before=7674 elapsed=11
+Hello FreeRTOS
+[MON] stack_hwm acq=376 proc=202 mon=366 (words)
+[MON] heap free=6296 min_ever=6296 (bytes)
+[ACQ] vTaskDelayUntil tick_before=8174 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=8674 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelayUntil tick_before=9174 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=9674 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=10174 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=10674 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=376 proc=198 mon=366 (words)
+[MON] heap free=6296 min_ever=6296 (bytes)
+[ACQ] vTaskDelayUntil tick_before=11174 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=11674 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=12174 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=12674 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=13174 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=13674 elapsed=11
+[PROC] processing tick
+Hello F[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=376 proc=198 mon=366 (words)
+[MON] heap free=6296 min_ever=6296 (bytes)
+[ACQ] vTaskDelayUntil tick_before=32174 elapsed=11
+[FI] DMA_RX_LONG_FRAME: count only (no escalation)
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=32674 elapsed=11
+[FI] RXSTATS consec_fail=0 err_count=0 restart=0 long_frame=1 app_overflow=0
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=33174 elapsed=11
+

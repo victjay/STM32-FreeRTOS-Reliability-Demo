@@ -1,0 +1,9 @@
+�Q��}Ĉ���$a�,�[PROC] processing tick
+[FI] DMA_RX_ERROR_ONCE: injecting 1 RX error
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=64174 elapsed=11
+[FI] RXSTATS consec_fail=0 err_count=2 restart=2 long_frame=0 app_overflow=0
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=64674 elapsed=11
+

@@ -169,14 +169,18 @@ void HealthMonitor::reportExternalFault(uint32_t source,
     }
     taskEXIT_CRITICAL();
 
+    // stack overflow occur jj
+//    if (accepted) {
+//        char buf[96];
+//        snprintf(buf, sizeof(buf),
+//                 "[HM] external fault reported src=%lu err=0x%lX consec=%lu\r\n",
+//                 (unsigned long)source,
+//                 (unsigned long)errorCode,
+//                 (unsigned long)consecutiveFail);
+//        UartLogger::getInstance().log(buf);
+//    }
     if (accepted) {
-        char buf[96];
-        snprintf(buf, sizeof(buf),
-                 "[HM] external fault reported src=%lu err=0x%lX consec=%lu\r\n",
-                 (unsigned long)source,
-                 (unsigned long)errorCode,
-                 (unsigned long)consecutiveFail);
-        UartLogger::getInstance().log(buf);
+        UartLogger::getInstance().log("[HM] external fault reported\r\n");
     }
 }
 

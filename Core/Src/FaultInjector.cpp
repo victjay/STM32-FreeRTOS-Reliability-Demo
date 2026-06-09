@@ -26,6 +26,10 @@ extern "C" volatile uint32_t g_malloc_failed_hook_count;
 
 #define FI_CMD_BUF_SIZE  32
 
+
+/* Error code used for injected RX errors (distinguishable from real HAL codes). */
+#define FI_RX_INJECTED_ERR  0x0E17U   /* "E17" ~ injected */
+
 /* ------------------------------------------------------------------ */
 /* Command dispatch                                                    */
 /* ------------------------------------------------------------------ */
@@ -62,6 +66,36 @@ static void fi_dispatch(const char *cmd)
         /* Allow UART TX to complete before reset */
         vTaskDelay(pdMS_TO_TICKS(50));
         NVIC_SystemReset();
+    }
+    else if (strcmp(cmd, "DMA_RX_ERROR_ONCE") == 0) {
+        /* Inject one RX error; next service() does a single local recovery.
+         * Not an escalation test (consecutive_fail should reach 1). */
+        UartLogger::getInstance().log("[FI] DMA_RX_ERROR_ONCE: injecting 1 RX error\r\n");
+        uart_dma_rx_inject_error(FI_RX_INJECTED_ERR);
+    }
+    else if (strcmp(cmd, "DMA_RX_ERROR_REPEAT3") == 0) {
+        /* Drive the real recovery path 3x (inject+service). Expected to reach
+         * the consecutive-failure threshold and escalate to HealthMonitor,
+         * which stops IWDG feed -> controlled reset. */
+        UartLogger::getInstance().log("[FI] DMA_RX_ERROR_REPEAT3: 3x inject+service (escalation expected)\r\n");
+        uart_dma_rx_inject_error_repeat(FI_RX_INJECTED_ERR, 3U);
+    }
+    else if (strcmp(cmd, "DMA_RX_LONG_FRAME") == 0) {
+        /* Application-level abnormal input: counted only, never escalated. */
+        UartLogger::getInstance().log("[FI] DMA_RX_LONG_FRAME: count only (no escalation)\r\n");
+        uart_dma_rx_inject_long_frame();
+    }
+    else if (strcmp(cmd, "DMA_RX_STATS") == 0) {
+        char sbuf[128];
+        snprintf(sbuf, sizeof(sbuf),
+                 "[FI] RXSTATS consec_fail=%lu err_count=%lu restart=%lu "
+                 "long_frame=%lu app_overflow=%lu\r\n",
+                 (unsigned long)uart_dma_rx_get_consecutive_fail(),
+                 (unsigned long)uart_dma_rx_get_error_count(),
+                 (unsigned long)uart_dma_rx_get_restart_count(),
+                 (unsigned long)uart_dma_rx_get_long_frame_count(),
+                 (unsigned long)uart_dma_rx_get_app_overflow_count());
+        UartLogger::getInstance().log(sbuf);
     }
     else {
         char buf[48];

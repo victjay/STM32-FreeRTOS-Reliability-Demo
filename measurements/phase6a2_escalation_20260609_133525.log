@@ -1,0 +1,119 @@
+sent REPEAT3, waiting for escalation + IWDG reset...
+eeRTOS
+[ACQ] vTaskDelayUntil tick_before=65174 elapsed=11
+[MON] stack_hwm acq=370 proc=198 mon=366 (words)
+[MON] heap free=6296 min_ever=6296 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=65674 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelayUntil tick_before=66174 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=66674 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=67174 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelayUntil tick_before=67674 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=68174 elapsed=11
+[MON] stack_hwm acq=370 proc=198 mon=366 (words)
+[MON] heap free=6296 min_ever=6296 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=68674 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=69174 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=69674 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=70174 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=70674 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=71174 elapsed=11
+[MON] stack_hwm acq=370 proc=198 mon=366 (words)
+[MON] heap free=6296 min_ever=6296 (bytes)
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=71674 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=72174 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=72674 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=73174 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil t[PROC] processing tick
+[ACQ] vTaskDelayUntil tick_before=101174 elapsed=11
+Hello FreeRTOS
+[FI] DMA_RX_ERROR_REPEAT3: 3x inject+service (escalation expected)
+[HM] external fault reported
+[MON] stack_hwm acq=369 proc=198 mon=366 (words)
+[MON] heap free=6296 min_ever=6296 (bytes)
+[ACQ] vTaskDelayUntil tick_before=101674 elapsed=11
+Hello FreeRTOS
+[HM] fault active - stopping IWDG feed, reset imminent
+[PROC] processing tick
+[ACQ] vTaskDelayUntil tick_before=102174 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelayUntil tick_before=102674 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelayUntil tick_before=103174 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelayUntil tick_before=103674 elapsed=11
+Hello FreeRTOS
+[BOOT] reset cause: PIN reset (button) ==============================>
+[BOOT] reset cause: IWDG watchdog  ==============================>
+[BOOT] WdgRecord v2 src=1 task_id=4294967295 latch_tick=101708 feed_stop_tick=101708
+[BOOT] WdgRecord rx_fail=3 rx_err=0xE17 boot_count=2 iwdg_timeout~3000ms(2040-5650ms range)
+[SYS] SystemCoreClock=84000000
+Hello FreeRTOS
+[HM] registered task id=0 timeout=1500ms
+[HM] registered task id=1 timeout=2250ms
+[HM] HealthMonitor started (IWDG feed owner)
+[ACQ] task started
+[ACQ] vTaskDelay  tick_before=14 elapsed=12
+[PROC] task started
+[FI] FaultInjector started
+[FI] RX mode: DMA + IDLE
+[FI] st=0 errcode=0x0 RxState=0x22 hdmarx=0x20000384 NDTR=64
+[PROC] processing tick
+[MON] task started
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=530 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=1046 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=1562 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[MON] stack_hwm acq=376 proc=202 mon=423 (words)
+[MON] heap free=6296 min_ever=6296 (bytes)
+[ACQ] vTaskDelay  tick_before=2078 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=2594 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelay  tick_before=3110 elapsed=11
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=3626 elapsed=11
+[PROC] processing tick
+Hello FreeRTOS
+[ACQ] vTaskDelay  tick_before=4142 elapsed=11
+Hello FreeRTOS
+[PROC] processing tick
+[ACQ] vTaskDelay  tick_before=4658 elapsed=11
+Hello FreeRTOS
+[MON] stack_hwm acq=376 proc=202 mon=366 
